@@ -1,0 +1,8 @@
+version: '3'
+services:
+  app:
+    image: your-dockerhub-username/inspireVue:latest
+    env_file:
+      - inspireVue-env
+    ports:
+      - "7045:80"
