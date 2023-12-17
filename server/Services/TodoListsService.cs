@@ -18,6 +18,20 @@ public class TodoListsService
     return todoList;
   }
 
+  internal TodoList GetTodoListById(int todoListId, string userId)
+  {
+    TodoList todoList = _repository.GetTodoListById(todoListId);
+    if (todoList.AccountId != userId)
+    {
+      throw new Exception("Not your list to get");
+    }
+    if (todoList == null)
+    {
+      throw new Exception($"No list with the ID {todoListId}");
+    }
+    return todoList;
+  }
+
   internal TodoList GetMyTodoList(string userId)
   {
     TodoList todoList = _repository.GetMyTodoList(userId);

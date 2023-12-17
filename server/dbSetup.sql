@@ -34,3 +34,17 @@ CREATE TABLE
     ) default charset utf8 COMMENT '';
 
 DROP TABLE todolists;
+
+SELECT * FROM todolists WHERE id = 1;
+
+INSERT INTO
+    todolistitems (
+        description,
+        creatorId,
+        todoListId
+    )
+VALUES (
+        "Test",
+        "652ef11083c134acc79f1229",
+        1
+    );

@@ -32,5 +32,22 @@ public class TodoListsController : ControllerBase
     }
   }
 
+  [Authorize]
+  [HttpGet("{todoListId}")]
+  public async Task<ActionResult<TodoList>> GetTodoListById(int todoListId)
+  {
+    try
+    {
+      Account userInfo = await _auth0Provider.GetUserInfoAsync<Account>(HttpContext);
+      string userId = userInfo.Id;
+      TodoList todoList = _todolistsService.GetTodoListById(todoListId, userId);
+      return Ok(todoList);
+    }
+    catch (Exception exception)
+    {
+      return BadRequest(exception.Message);
+    }
+  }
+
 
 }
