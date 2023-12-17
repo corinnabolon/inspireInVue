@@ -1,6 +1,7 @@
 
 
 
+
 namespace inspireVue.Repositories;
 
 public class TodoListItemsRepository
@@ -28,6 +29,15 @@ public class TodoListItemsRepository
     string sql = "SELECT * FROM todolistitems;";
 
     List<TodoListItem> todoListItems = _db.Query<TodoListItem>(sql).ToList();
+
+    return todoListItems;
+  }
+
+  internal List<TodoListItem> getTodoListItemsByTodoListId(int todoListId)
+  {
+    string sql = @"SELECT * FROM todolistitems WHERE todoListId = @todoListId;";
+
+    List<TodoListItem> todoListItems = _db.Query<TodoListItem>(sql, new { todoListId }).ToList();
 
     return todoListItems;
   }

@@ -1,5 +1,6 @@
 
 
+
 namespace inspireVue.Services;
 
 public class TodoListsService
@@ -35,6 +36,11 @@ public class TodoListsService
   internal TodoList GetMyTodoList(string userId)
   {
     TodoList todoList = _repository.GetMyTodoList(userId);
+    if (todoList == null)
+    {
+      throw new Exception("You don't have a todo list");
+    }
     return todoList;
   }
+
 }

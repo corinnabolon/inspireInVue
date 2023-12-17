@@ -1,20 +1,40 @@
 <template>
-  <div class="home flex-grow-1 d-flex flex-column align-items-center justify-content-center">
-    <div class="home-card p-5 card align-items-center shadow rounded elevation-3">
-      <img src="https://bcw.blob.core.windows.net/public/img/8600856373152463" alt="CodeWorks Logo"
-        class="rounded-circle">
-      <h1 class="my-5 bg-dark text-white p-3 rounded text-center">
-        Vue 3 Starter
-      </h1>
-    </div>
+  <div class="container-fluid">
+    <section v-if="account" class="row">
+      <div v-for="listItem in todoListItems" class="col-12">
+        <p>{{ listItem.description }}</p>
+      </div>
+    </section>
   </div>
 </template>
 
 <script>
+import { onMounted, watch, computed } from "vue"
+import { todoListsService } from "../services/TodoListsService.js"
+import Pop from "../utils/Pop.js"
+import { AppState } from "../AppState.js"
+
 export default {
   setup() {
+    const account = computed(() => AppState.account)
+
+    watch(account, () => {
+      getMyList();
+    })
+
+    async function getMyList() {
+      try {
+        await todoListsService.getMyList()
+      } catch (error) {
+        Pop.error(error)
+      }
+    }
+
     return {
-      
+      account,
+      todoList: computed(() => AppState.todoList),
+      todoListItems: computed(() => AppState.todoListItems)
+
     }
   }
 }

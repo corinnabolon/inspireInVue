@@ -9,10 +9,13 @@ public class TodoListsController : ControllerBase
 
   private readonly TodoListsService _todolistsService;
 
-  public TodoListsController(Auth0Provider auth0Provider, TodoListsService todoListsService)
+  private readonly TodoListItemsService _todolistitemsService;
+
+  public TodoListsController(Auth0Provider auth0Provider, TodoListsService todoListsService, TodoListItemsService todolistitemsService)
   {
     _auth0Provider = auth0Provider;
     _todolistsService = todoListsService;
+    _todolistitemsService = todolistitemsService;
   }
 
   [Authorize]
@@ -42,6 +45,24 @@ public class TodoListsController : ControllerBase
       string userId = userInfo.Id;
       TodoList todoList = _todolistsService.GetTodoListById(todoListId, userId);
       return Ok(todoList);
+    }
+    catch (Exception exception)
+    {
+      return BadRequest(exception.Message);
+    }
+  }
+
+  [Authorize]
+  [HttpGet("{todoListId}/todolistitems")]
+
+  public async Task<ActionResult<List<TodoListItem>>> getTodoListItemsByTodoListId(int todoListId)
+  {
+    try
+    {
+      Account userInfo = await _auth0Provider.GetUserInfoAsync<Account>(HttpContext);
+      string userId = userInfo.Id;
+      List<TodoListItem> todoListItems = _todolistitemsService.getTodoListItemsByTodoListId(todoListId, userId);
+      return Ok(todoListItems);
     }
     catch (Exception exception)
     {

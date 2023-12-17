@@ -4,5 +4,9 @@ import { reactive } from 'vue'
 export const AppState = reactive({
   user: {},
   /** @type {import('./models/Account.js').Account} */
-  account: {}
+  account: {},
+  /** @type {import('./models/TodoList.js').TodoList | null} */
+  todoList: null,
+  /** @type {import('./models/TodoListItem.js').TodoListItem[]} */
+  todoListItems: []
 })

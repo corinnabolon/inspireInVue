@@ -35,4 +35,15 @@ public class TodoListItemsService
     List<TodoListItem> todoListItems = _repository.GetTodoListItems();
     return todoListItems;
   }
+
+  internal List<TodoListItem> getTodoListItemsByTodoListId(int todoListId, string userId)
+  {
+    TodoList todoList = _todoListsService.GetMyTodoList(userId);
+    if (todoListId != todoList.Id)
+    {
+      throw new Exception("Not your list items to get");
+    }
+    List<TodoListItem> todoListItems = _repository.getTodoListItemsByTodoListId(todoListId);
+    return todoListItems;
+  }
 }
