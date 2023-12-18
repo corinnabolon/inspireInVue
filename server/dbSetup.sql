@@ -1,4 +1,4 @@
--- Active: 1701191390666@@SG-harsh-omelet-6782-8000-mysql-master.servers.mongodirector.com@3306@FirstDatabase
+-- Active: 1702937297947@@34.211.60.37@3306@inspire
 
 CREATE TABLE
     IF NOT EXISTS accounts(
