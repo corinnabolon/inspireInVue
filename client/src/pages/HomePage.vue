@@ -1,6 +1,7 @@
 <template>
   <div class="container-fluid">
     <section v-if="account" class="row">
+      {{ todoList }}
       <div v-for="listItem in todoListItems" class="col-12">
         <p>{{ listItem.description }}</p>
       </div>
@@ -23,13 +24,13 @@ export default {
       getMyList();
     })
 
-    function getOrCreateList() {
-      try {
-        this.getMyList()
-      } catch (error) {
-        this.createMyList()
-      }
-    }
+    // function getOrCreateList() {
+    //   try {
+    //     this.getMyList()
+    //   } catch (error) {
+    //     this.createMyList()
+    //   }
+    // }
 
     async function getMyList() {
       try {
@@ -39,13 +40,13 @@ export default {
       }
     }
 
-    async function createMyList(accountId) {
-      try {
-        await todoListsService.createMyList(accountId)
-      } catch (error) {
-        Pop.error(error)
-      }
-    }
+    // async function createMyList(accountId) {
+    //   try {
+    //     await todoListsService.createMyList(accountId)
+    //   } catch (error) {
+    //     Pop.error(error)
+    //   }
+    // }
 
     return {
       account,
