@@ -17,14 +17,31 @@ import { AppState } from "../AppState.js"
 export default {
   setup() {
     const account = computed(() => AppState.account)
+    const accoundId = computed(() => AppState.accountId)
 
     watch(account, () => {
       getMyList();
     })
 
+    function getOrCreateList() {
+      try {
+        this.getMyList()
+      } catch (error) {
+        this.createMyList()
+      }
+    }
+
     async function getMyList() {
       try {
         await todoListsService.getMyList()
+      } catch (error) {
+        Pop.error(error)
+      }
+    }
+
+    async function createMyList(accountId) {
+      try {
+        await todoListsService.createMyList(accountId)
       } catch (error) {
         Pop.error(error)
       }

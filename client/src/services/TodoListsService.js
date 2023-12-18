@@ -7,11 +7,22 @@ import { todoListItemsService } from "./TodoListItemsService.js"
 class TodoListsService {
 
   async getMyList() {
-    const res = await api.get("account/todolists")
-    logger.log("mylist", res.data)
+    try {
+      const res = await api.get("account/todolists")
+      const myListData = new TodoList(res.data)
+      logger.log("myListData", myListData)
+      AppState.todoList = myListData
+      todoListItemsService.getMyListItems(myListData.id)
+    } catch (error) {
+      this.createMyList(AppState.account.id)
+    }
+  }
+
+  async createMyList(accountId) {
+    const res = await api.post("api/todolists", accountId)
     const myListData = new TodoList(res.data)
-    logger.log(myListData)
-    AppState.TodoList = myListData
+    logger.log("myListData", myListData)
+    AppState.todoList = myListData
     todoListItemsService.getMyListItems(myListData.id)
   }
 
