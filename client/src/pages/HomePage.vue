@@ -6,6 +6,11 @@
         <p>{{ listItem.description }}</p>
       </div>
     </section>
+    <section v-if="quote" class="row">
+      <div class="col-12">
+        {{ quote }}
+      </div>
+    </section>
   </div>
 </template>
 
@@ -14,23 +19,20 @@ import { onMounted, watch, computed } from "vue"
 import { todoListsService } from "../services/TodoListsService.js"
 import Pop from "../utils/Pop.js"
 import { AppState } from "../AppState.js"
+import { quotesService } from "../services/QuotesService.js"
 
 export default {
   setup() {
     const account = computed(() => AppState.account)
     const accoundId = computed(() => AppState.accountId)
 
+    onMounted(() => {
+      getQuote();
+    })
+
     watch(account, () => {
       getMyList();
     })
-
-    // function getOrCreateList() {
-    //   try {
-    //     this.getMyList()
-    //   } catch (error) {
-    //     this.createMyList()
-    //   }
-    // }
 
     async function getMyList() {
       try {
@@ -40,18 +42,20 @@ export default {
       }
     }
 
-    // async function createMyList(accountId) {
-    //   try {
-    //     await todoListsService.createMyList(accountId)
-    //   } catch (error) {
-    //     Pop.error(error)
-    //   }
-    // }
+    async function getQuote() {
+      try {
+        await quotesService.getQuote()
+      } catch (error) {
+        Pop.error(error)
+      }
+    }
+
 
     return {
       account,
       todoList: computed(() => AppState.todoList),
-      todoListItems: computed(() => AppState.todoListItems)
+      todoListItems: computed(() => AppState.todoListItems),
+      quote: computed(() => AppState.quote)
 
     }
   }

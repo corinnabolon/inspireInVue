@@ -8,5 +8,7 @@ export const AppState = reactive({
   /** @type {import('./models/TodoList.js').TodoList | null} */
   todoList: null,
   /** @type {import('./models/TodoListItem.js').TodoListItem[]} */
-  todoListItems: []
+  todoListItems: [],
+  /** @type {import('./models/Quote.js').Quote | null} */
+  quote: null
 })
