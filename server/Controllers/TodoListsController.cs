@@ -61,7 +61,7 @@ public class TodoListsController : ControllerBase
     {
       Account userInfo = await _auth0Provider.GetUserInfoAsync<Account>(HttpContext);
       string userId = userInfo.Id;
-      List<TodoListItem> todoListItems = _todolistitemsService.getTodoListItemsByTodoListId(todoListId, userId);
+      List<TodoListItem> todoListItems = _todolistitemsService.GetTodoListItemsByTodoListId(todoListId, userId);
       return Ok(todoListItems);
     }
     catch (Exception exception)

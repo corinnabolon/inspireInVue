@@ -6,7 +6,7 @@ public class TodoListItem
   public DateTime CreatedAt { get; set; }
 
   public DateTime UpdatedAt { get; set; }
-  public bool Completed { get; set; }
+  public bool? Completed { get; set; }
   public string Description { get; set; }
 
   public string CreatorId { get; set; }

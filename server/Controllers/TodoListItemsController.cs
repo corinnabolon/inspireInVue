@@ -16,7 +16,7 @@ public class TodoListItemsController : ControllerBase
   }
 
   [HttpGet]
-  public ActionResult<List<TodoListItem>> GetTodoListItems()
+  public ActionResult<List<TodoListItem>> GetTodoListItem()
   {
     try
     {
@@ -28,7 +28,6 @@ public class TodoListItemsController : ControllerBase
       return BadRequest(exception.Message);
     }
   }
-  //TODO get rid of the above function, change to get todolistitems by todolist ID
 
   [Authorize]
   [HttpPost]
@@ -41,6 +40,47 @@ public class TodoListItemsController : ControllerBase
       string userId = userInfo.Id;
       TodoListItem todoListItem = _todolistItemsService.CreateTodoListItem(todoListItemData, userId);
       return Ok(todoListItemData);
+    }
+    catch (Exception exception)
+    {
+      return BadRequest(exception.Message);
+    }
+  }
+
+  [Authorize]
+  [HttpPut("{todolistitemId}")]
+
+  public async Task<ActionResult<TodoListItem>> EditTodoListItem(int todolistitemId, [FromBody] TodoListItem todolistitemData)
+  {
+    try
+    {
+      Account userInfo = await _auth0Provider.GetUserInfoAsync<Account>(HttpContext);
+      string userId = userInfo.Id;
+      TodoListItem todolistItem = _todolistItemsService.EditTodoListItem(todolistitemId, todolistitemData, userId);
+      return Ok(todolistItem);
+    }
+    catch (Exception exception)
+    {
+      return BadRequest(exception.Message);
+    }
+
+  }
+
+
+
+
+
+  [Authorize]
+  [HttpDelete("{todolistitemId}")]
+
+  public async Task<ActionResult<string>> RemoveTodoListItem(int todolistitemId)
+  {
+    try
+    {
+      Account userInfo = await _auth0Provider.GetUserInfoAsync<Account>(HttpContext);
+      string userId = userInfo.Id;
+      string message = _todolistItemsService.RemoveTodoListItem(todolistitemId, userId);
+      return Ok(message);
     }
     catch (Exception exception)
     {
