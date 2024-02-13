@@ -5,7 +5,6 @@ node_modules
 # local env files
 .env.local
 .env.*.local
-src/services/AxiosService.js
 
 # Log files
 npm-debug.log*
@@ -21,3 +20,5 @@ yarn-error.log*
 *.sw?
 
 .fake
+
+src/config/secrets.js
