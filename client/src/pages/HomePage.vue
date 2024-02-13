@@ -20,6 +20,7 @@ import { todoListsService } from "../services/TodoListsService.js"
 import Pop from "../utils/Pop.js"
 import { AppState } from "../AppState.js"
 import { quotesService } from "../services/QuotesService.js"
+import { weatherService } from "../services/WeatherService.js"
 
 export default {
   setup() {
@@ -28,6 +29,7 @@ export default {
 
     onMounted(() => {
       getQuote();
+      getWeather();
     })
 
     watch(account, () => {
@@ -45,6 +47,14 @@ export default {
     async function getQuote() {
       try {
         await quotesService.getQuote()
+      } catch (error) {
+        Pop.error(error)
+      }
+    }
+
+    async function getWeather() {
+      try {
+        await weatherService.getWeather()
       } catch (error) {
         Pop.error(error)
       }

@@ -5,7 +5,7 @@ class WeatherService {
 
   async getWeather() {
     let location = "corvallis"
-    const res = await weatherApi.get(`api/realtime?location=${location}`)
+    const res = await weatherApi.get(`realtime?location=${location}`)
     logger.log(res)
   }
 
