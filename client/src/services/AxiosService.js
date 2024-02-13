@@ -16,7 +16,7 @@ export const sandboxApi = Axios.create({
 export const weatherApi = Axios.create({
   baseURL: 'https://api.tomorrow.io/v4/weather',
   timeout: 6000,
-  param: { apikey: "pasteinhere" }
+  param: { apikey: "pasteinhe" }
 })
 
 api.interceptors.request.use(config => config, handleAxiosError)
