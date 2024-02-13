@@ -29,7 +29,7 @@ export default {
 
     onMounted(() => {
       getQuote();
-      getWeather();
+      // getWeather();
     })
 
     watch(account, () => {
@@ -52,13 +52,13 @@ export default {
       }
     }
 
-    async function getWeather() {
-      try {
-        await weatherService.getWeather()
-      } catch (error) {
-        Pop.error(error)
-      }
-    }
+    // async function getWeather() {
+    //   try {
+    //     await weatherService.getWeather()
+    //   } catch (error) {
+    //     Pop.error(error)
+    //   }
+    // }
 
 
     return {

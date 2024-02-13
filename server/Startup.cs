@@ -23,7 +23,7 @@ public class Startup
   {
     ConfigureCors(services);
     ConfigureAuth(services);
-    services.AddControllers();
+    services.AddControllersWithViews();
     services.AddSwaggerGen(c =>
     {
       c.SwaggerDoc("v1", new OpenApiInfo { Title = "inspireVue", Version = "v1" });
@@ -39,6 +39,8 @@ public class Startup
 
     services.AddScoped<TodoListItemsRepository>();
     services.AddScoped<TodoListItemsService>();
+
+    services.AddScoped<WeatherService>();
   }
 
   private void ConfigureCors(IServiceCollection services)
@@ -103,9 +105,11 @@ public class Startup
 
 
     app.UseEndpoints(endpoints =>
-    {
-      endpoints.MapControllers();
-    });
+        {
+          endpoints.MapControllerRoute(
+          name: "default",
+          pattern: "{controller=Home}/{action=Index}/{id?}");
+        });
   }
 }
 

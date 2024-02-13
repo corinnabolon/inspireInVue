@@ -1,7 +1,6 @@
 import Axios from 'axios';
 import { baseURL } from '../env'
 import { logger } from '../utils/Logger.js'
-
 export const api = Axios.create({
   baseURL,
   timeout: 8000
@@ -13,13 +12,12 @@ export const sandboxApi = Axios.create({
   withCredentials: true
 })
 
-const weatherApiKey = require('../config/secrets');
 
-export const weatherApi = Axios.create({
-  baseURL: 'https://api.tomorrow.io/v4/weather',
-  timeout: 6000,
-  param: { apikey: weatherApiKey }
-})
+// export const weatherApi = Axios.create({
+//   baseURL: 'https://api.tomorrow.io/v4/weather',
+//   timeout: 6000,
+//   param: { apikey: weatherApiKey }
+// })
 
 api.interceptors.request.use(config => config, handleAxiosError)
 api.interceptors.response.use(response => response, handleAxiosError)
