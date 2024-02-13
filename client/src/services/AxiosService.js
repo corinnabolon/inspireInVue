@@ -13,10 +13,12 @@ export const sandboxApi = Axios.create({
   withCredentials: true
 })
 
+const weatherApiKey = require('../config/secrets');
+
 export const weatherApi = Axios.create({
   baseURL: 'https://api.tomorrow.io/v4/weather',
   timeout: 6000,
-  param: { apikey: "pasteinhere" }
+  param: { apikey: weatherApiKey }
 })
 
 api.interceptors.request.use(config => config, handleAxiosError)
