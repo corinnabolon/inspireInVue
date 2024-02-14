@@ -24,12 +24,19 @@ public class WeatherController : Controller
   {
     var currentWeatherJson = await _weatherService.GetCurrentWeather();
 
-    if (currentWeatherJson == null)
+    if (string.IsNullOrEmpty(currentWeatherJson))
     {
+      Console.WriteLine("API request failed or returned null.");
       return View("Error");
     }
 
     var currentWeather = JsonConvert.DeserializeObject<YourWeatherClass>(currentWeatherJson);
+
+    if (currentWeather == null)
+    {
+      Console.WriteLine("Deserialization failed.");
+      return View("Error");
+    }
 
 
     // return View(currentWeather);

@@ -16,12 +16,10 @@ public class WeatherService
   public async Task<string> GetCurrentWeather()
   {
     string apiKey = _configuration["WeatherApiSettings:WeatherApiKey"];
-    string apiUrl = "https://api.tomorrow.io/v4/weather/realtime?location=corvallis";
+    string apiUrl = $"https://api.tomorrow.io/v4/weather/realtime?location=corvallis&apikey={apiKey}";
 
     using (HttpClient httpClient = new HttpClient())
     {
-      httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {apiKey}");
-
       HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
 
       if (response.IsSuccessStatusCode)
