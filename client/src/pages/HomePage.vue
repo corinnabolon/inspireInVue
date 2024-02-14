@@ -5,11 +5,14 @@
       <div v-for="listItem in todoListItems" class="col-12">
         <p>{{ listItem.description }}</p>
       </div>
-      <div>
+      <div v-if="currentWeather">
         <p>Weather:</p>
         <p>{{ currentWeather.humidity }}</p>
         <p>{{ currentWeather.precipitationProbability }}</p>
         <p>{{ currentWeather.temperature }}</p>
+      </div>
+      <div v-if="image">
+        <img :src="image.imgUrl" />
       </div>
     </section>
     <section v-if="quote" class="row">
@@ -27,6 +30,7 @@ import Pop from "../utils/Pop.js"
 import { AppState } from "../AppState.js"
 import { quotesService } from "../services/QuotesService.js"
 import { weatherService } from "../services/WeatherService.js"
+import { imagesService } from "../services/ImagesService.js"
 
 export default {
   setup() {
@@ -35,6 +39,7 @@ export default {
 
     onMounted(() => {
       getQuote();
+      getImage();
       getWeather();
     })
 
@@ -66,13 +71,22 @@ export default {
       }
     }
 
+    async function getImage() {
+      try {
+        await imagesService.getImage()
+      } catch (error) {
+        Pop.error(error)
+      }
+    }
+
 
     return {
       account,
       todoList: computed(() => AppState.todoList),
       todoListItems: computed(() => AppState.todoListItems),
       quote: computed(() => AppState.quote),
-      currentWeather: computed(() => AppState.currentWeather)
+      currentWeather: computed(() => AppState.currentWeather),
+      image: computed(() => AppState.image)
 
     }
   }
