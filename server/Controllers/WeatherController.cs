@@ -24,7 +24,7 @@ public class WeatherController : Controller
   {
     var currentWeatherJson = await _weatherService.GetCurrentWeather();
 
-    if (string.IsNullOrEmpty(currentWeatherJson))
+    if (currentWeatherJson == null)
     {
       Console.WriteLine("API request failed or returned null.");
       return View("Error");
@@ -38,21 +38,26 @@ public class WeatherController : Controller
       return View("Error");
     }
 
+    if (currentWeather?.Data?.Values == null)
+    {
+      return View("Error");
+    }
+
 
     // return View(currentWeather);
     //The above would just return it as is; the below code maps it to my model
 
     var weatherViewModel = new WeatherViewModel
     {
-      Humidity = currentWeather.Values.Humidity,
-      PrecipitationProbability = currentWeather.Values.PrecipitationProbability,
-      Temperature = currentWeather.Values.Temperature,
+      Humidity = currentWeather.Data.Values.Humidity,
+      PrecipitationProbability = currentWeather.Data.Values.PrecipitationProbability,
+      Temperature = currentWeather.Data.Values.Temperature,
       // Map other properties as needed
     };
 
-    Console.WriteLine($"Humidity: {currentWeather.Values.Humidity}");
-    Console.WriteLine($"Precipitation Probability: {currentWeather.Values.PrecipitationProbability}");
-    Console.WriteLine($"Temperature: {currentWeather.Values.Temperature}");
+    // Console.WriteLine($"Humidity: {currentWeather.Values.Humidity}");
+    // Console.WriteLine($"Precipitation Probability: {currentWeather.Values.PrecipitationProbability}");
+    // Console.WriteLine($"Temperature: {currentWeather.Values.Temperature}");
 
     // Pass the mapped data to the view
     return View(weatherViewModel);

@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 using inspireVue.Models;
 using inspireVue.Services;
 
-public class YourWeatherClass
+public class WeatherData
 {
-  public WeatherData Data { get; set; }
+  public WeatherValues Values { get; set; }
 }
