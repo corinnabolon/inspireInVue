@@ -1,13 +1,16 @@
 import { logger } from '../utils/Logger.js'
-// import { weatherApi } from "./AxiosService.js"
+import { api } from "./AxiosService.js"
+import { Weather } from "../models/Weather.js";
+import { AppState } from "../AppState.js";
 
 class WeatherService {
 
-  // async getWeather() {
-  //   let location = "corvallis"
-  //   const res = await weatherApi.get(`realtime?location=${location}`)
-  //   logger.log(res)
-  // }
+  async getWeather() {
+    const res = await api.get('/Weather/Index');
+    logger.log(res.data)
+    AppState.currentWeather = new Weather(res.data)
+    logger.log(AppState.currentWeather)
+  }
 
 }
 

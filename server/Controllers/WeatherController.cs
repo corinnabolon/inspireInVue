@@ -60,7 +60,11 @@ public class WeatherController : Controller
     // Console.WriteLine($"Temperature: {currentWeather.Values.Temperature}");
 
     // Pass the mapped data to the view
-    return View(weatherViewModel);
+    // return View(weatherViewModel);
+
+    //The above would have returned the view in my Views/Index.cshtml
+
+    return Ok(weatherViewModel);
   }
 
 }

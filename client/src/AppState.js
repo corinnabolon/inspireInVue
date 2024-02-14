@@ -10,5 +10,7 @@ export const AppState = reactive({
   /** @type {import('./models/TodoListItem.js').TodoListItem[]} */
   todoListItems: [],
   /** @type {import('./models/Quote.js').Quote | null} */
-  quote: null
+  quote: null,
+  /** @type {import('./models/Weather.js').Weather | null} */
+  currentWeather: null
 })

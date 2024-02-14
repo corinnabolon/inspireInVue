@@ -5,6 +5,12 @@
       <div v-for="listItem in todoListItems" class="col-12">
         <p>{{ listItem.description }}</p>
       </div>
+      <div>
+        <p>Weather:</p>
+        <p>{{ currentWeather.humidity }}</p>
+        <p>{{ currentWeather.precipitationProbability }}</p>
+        <p>{{ currentWeather.temperature }}</p>
+      </div>
     </section>
     <section v-if="quote" class="row">
       <div class="col-12">
@@ -29,7 +35,7 @@ export default {
 
     onMounted(() => {
       getQuote();
-      // getWeather();
+      getWeather();
     })
 
     watch(account, () => {
@@ -52,20 +58,21 @@ export default {
       }
     }
 
-    // async function getWeather() {
-    //   try {
-    //     await weatherService.getWeather()
-    //   } catch (error) {
-    //     Pop.error(error)
-    //   }
-    // }
+    async function getWeather() {
+      try {
+        await weatherService.getWeather()
+      } catch (error) {
+        Pop.error(error)
+      }
+    }
 
 
     return {
       account,
       todoList: computed(() => AppState.todoList),
       todoListItems: computed(() => AppState.todoListItems),
-      quote: computed(() => AppState.quote)
+      quote: computed(() => AppState.quote),
+      currentWeather: computed(() => AppState.currentWeather)
 
     }
   }
