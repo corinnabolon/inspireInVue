@@ -1,5 +1,6 @@
 <template>
-  <div class="container-fluid">
+  <div v-if="image" class="container-fluid">
+    <Cover :coverProp="image" />
     <section v-if="account" class="row">
       {{ todoList }}
       <div v-for="listItem in todoListItems" class="col-12">
@@ -10,9 +11,6 @@
         <p>{{ currentWeather.humidity }}</p>
         <p>{{ currentWeather.precipitationProbability }}</p>
         <p>{{ currentWeather.temperature }}</p>
-      </div>
-      <div v-if="image">
-        <img :src="image.imgUrl" />
       </div>
     </section>
     <section v-if="quote" class="row">
@@ -31,6 +29,7 @@ import { AppState } from "../AppState.js"
 import { quotesService } from "../services/QuotesService.js"
 import { weatherService } from "../services/WeatherService.js"
 import { imagesService } from "../services/ImagesService.js"
+import Cover from "../components/Cover.vue";
 
 export default {
   setup() {
@@ -85,11 +84,12 @@ export default {
       todoList: computed(() => AppState.todoList),
       todoListItems: computed(() => AppState.todoListItems),
       quote: computed(() => AppState.quote),
+      image: computed(() => AppState.image),
       currentWeather: computed(() => AppState.currentWeather),
-      image: computed(() => AppState.image)
 
     }
-  }
+  },
+  components: { Cover },
 }
 </script>
 
