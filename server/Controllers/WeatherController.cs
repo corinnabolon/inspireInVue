@@ -35,12 +35,12 @@ public class WeatherController : Controller
     if (currentWeather == null)
     {
       Console.WriteLine("Deserialization failed.");
-      return View("Error");
+      return BadRequest("Deserialization failed.");
     }
 
     if (currentWeather?.Data?.Values == null)
     {
-      return View("Error");
+      return BadRequest("No weather API response?");
     }
 
 

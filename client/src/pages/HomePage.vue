@@ -30,6 +30,7 @@ import { quotesService } from "../services/QuotesService.js"
 import { weatherService } from "../services/WeatherService.js"
 import { imagesService } from "../services/ImagesService.js"
 import Cover from "../components/Cover.vue";
+import { logger } from "../utils/Logger.js"
 
 export default {
   setup() {
@@ -39,7 +40,7 @@ export default {
     onMounted(() => {
       getQuote();
       getImage();
-      getWeather();
+      // getWeather();
     })
 
     watch(account, () => {
@@ -48,6 +49,7 @@ export default {
 
     async function getMyList() {
       try {
+        logger.log("GetMyList triggered")
         await todoListsService.getMyList()
       } catch (error) {
         Pop.error(error)
