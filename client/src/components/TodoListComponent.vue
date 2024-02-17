@@ -5,12 +5,25 @@
         <p @click="toggleWantsToAdd" class="fs-1" title="Add To-do" role="button"><i class="mdi mdi-plus"></i></p>
       </div>
       <div class="col-3">
-        <form v-if="wantsToAdd" class="margin-align">
-          <input>
+        <form @submit.prevent="addTodoListItem()" v-if="wantsToAdd" class="margin-align d-flex">
+          <div>
+            <input v-model="editable" type="text" class="form-control" id="todoDescription"
+              aria-describedby="todoDescription" maxlength="1000" minlength="1">
+          </div>
+          <div>
+            <button class="btn btn-success" type="submit" role="button" title="Add this item to todo list"><i
+                class="mdi mdi-arrow-right"></i></button>
+          </div>
         </form>
       </div>
     </section>
-    TodoList
+    <section class="row">
+      <div v-for="todoListItem in todoListItems" class="col-12 d-flex my-2">
+        <input v-if="todoListItem.completed" class="me-2" type="checkbox" checked>
+        <input v-else class="me-2" type="checkbox">
+        <p class="mb-0">{{ todoListItem.description }}</p>
+      </div>
+    </section>
 
   </div>
 </template>
@@ -19,15 +32,34 @@
 <script>
 import { AppState } from '../AppState';
 import { computed, reactive, onMounted, ref } from 'vue';
+import { todoListsService } from "../services/TodoListsService.js";
+import { todoListItemsService } from "../services/TodoListItemsService.js";
+import Pop from "../utils/Pop.js";
 export default {
   setup() {
     let wantsToAdd = ref(false)
+    let editable = ref("")
 
     return {
       wantsToAdd,
+      editable,
+      todoListItems: computed(() => AppState.todoListItems),
 
       toggleWantsToAdd() {
         wantsToAdd.value = !wantsToAdd.value;
+      },
+
+      async addTodoListItem() {
+        try {
+          debugger
+          const todoListData = {}
+          todoListData.description = editable.value
+          await todoListItemsService.createListItem(todoListData)
+          editable.value = {}
+          Pop.success("Item added to to-do list")
+        } catch (error) {
+          Pop.error(error)
+        }
       }
     }
   }

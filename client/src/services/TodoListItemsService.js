@@ -12,6 +12,13 @@ class TodoListItemsService {
     AppState.todoListItems = res.data.map(pojo => new TodoListItem(pojo))
   }
 
+  async createListItem(todoListData) {
+    const res = await api.post(`api/todolistitems`, todoListData)
+    logger.log("Created Item", res.data)
+    AppState.todoListItems.push(new TodoListItem(res.data))
+    logger.log("Todo list items", AppState.todoListItems)
+  }
+
 }
 
 export const todoListItemsService = new TodoListItemsService()
