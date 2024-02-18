@@ -18,10 +18,8 @@
       </div>
     </section>
     <section class="row">
-      <div v-for="todoListItem in todoListItems" class="col-12 d-flex my-2">
-        <input v-if="todoListItem.completed" class="me-2" type="checkbox" checked>
-        <input v-else class="me-2" type="checkbox">
-        <p class="mb-0">{{ todoListItem.description }}</p>
+      <div v-for="todoListItem in todoListItems" class="d-flex">
+        <TodoListItemComponent :itemProp="todoListItem" />
       </div>
     </section>
 
@@ -31,10 +29,13 @@
 
 <script>
 import { AppState } from '../AppState';
-import { computed, reactive, onMounted, ref } from 'vue';
+import { computed, reactive, onMounted, ref, nextTick } from 'vue';
 import { todoListsService } from "../services/TodoListsService.js";
 import { todoListItemsService } from "../services/TodoListItemsService.js";
 import Pop from "../utils/Pop.js";
+import { logger } from "../utils/Logger.js";
+import TodoListItemComponent from "./TodoListItemComponent.vue";
+
 export default {
   setup() {
     let wantsToAdd = ref(false)
@@ -61,8 +62,11 @@ export default {
           Pop.error(error)
         }
       }
+
+
     }
-  }
+  },
+  components: { TodoListItemComponent }
 };
 </script>
 

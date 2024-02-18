@@ -19,6 +19,21 @@ class TodoListItemsService {
     logger.log("Todo list items", AppState.todoListItems)
   }
 
+  async editListItem(itemId) {
+    let foundItem = AppState.todoListItems.find((item) => item.id == itemId)
+    foundItem.completed = !foundItem.completed
+    const res = await api.put(`api/todolistitems/${itemId}`, foundItem)
+    logger.log("FoundItem after its change", foundItem)
+    let foundIndex = AppState.todoListItems.findIndex((item) => item.id == itemId)
+    AppState.todoListItems.splice(foundIndex, 1, new TodoListItem(res.data))
+  }
+
+  async removeListItem(itemId) {
+    const res = await api.delete(`api/todolistitems/${itemId}`)
+    let foundIndex = AppState.todoListItems.findIndex((item => item.id == itemId))
+    AppState.todoListItems.splice(foundIndex, 1)
+  }
+
 }
 
 export const todoListItemsService = new TodoListItemsService()

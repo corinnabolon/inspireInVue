@@ -20,7 +20,7 @@
           <p v-if="currentWeather" class="mt-2 mx-1 mb-1 py-2">{{ currentWeather.temperature }}°C</p>
           <p v-else class="mt-2 mx-1 mb-1 py-2">Weather not available</p>
         </div>
-        <div v-if="account" class="text-bg fredoka-font m-1 rounded text-center">
+        <div v-if="account.id" class="text-bg fredoka-font m-1 rounded text-center">
           <p class="mb-0 fs-1" title="To-do List" role="button" data-bs-toggle="modal" data-bs-target="#todoListModal"><i
               class="mdi mdi-notebook"></i></p>
         </div>
