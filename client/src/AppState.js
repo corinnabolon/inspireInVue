@@ -14,5 +14,7 @@ export const AppState = reactive({
   /** @type {import('./models/Weather.js').Weather | null} */
   currentWeather: null,
   /** @type {import('./models/Image.js').Image | null} */
-  image: null
+  image: null,
+  /** @type {Date | null} */
+  now: null
 })

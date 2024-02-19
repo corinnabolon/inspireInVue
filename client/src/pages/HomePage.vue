@@ -1,21 +1,11 @@
 <template>
   <div v-if="image" class="container-fluid">
     <Cover :coverProp="image" />
-    <section v-if="account" class="row">
-      {{ todoList }}
-      <div v-for="listItem in todoListItems" class="col-12">
-        <p>{{ listItem.description }}</p>
-      </div>
-      <div v-if="currentWeather">
-        <p>Weather:</p>
-        <p>{{ currentWeather.humidity }}</p>
-        <p>{{ currentWeather.precipitationProbability }}</p>
-        <p>{{ currentWeather.temperature }}</p>
-      </div>
-    </section>
-    <section v-if="quote" class="row">
+  </div>
+  <div v-else class="continer-fluid">
+    <section class="row flex-column justify-content-center align-items-center">
       <div class="col-12">
-        {{ quote }}
+        <p class="fs-1">Loading...<i class="mdi mdi-loading mdi-spin"></i></p>
       </div>
     </section>
   </div>
@@ -31,6 +21,7 @@ import { weatherService } from "../services/WeatherService.js"
 import { imagesService } from "../services/ImagesService.js"
 import Cover from "../components/Cover.vue";
 import { logger } from "../utils/Logger.js"
+import { clocksService } from "../services/ClocksService.js"
 
 export default {
   setup() {
@@ -40,12 +31,17 @@ export default {
     onMounted(() => {
       getQuote();
       getImage();
-      // getWeather();
+      getWeather();
+      calcClock();
     })
 
     watch(account, () => {
       getMyList();
     })
+
+    function calcClock() {
+      clocksService.calcClock();
+    }
 
     async function getMyList() {
       try {
@@ -79,6 +75,8 @@ export default {
         Pop.error(error)
       }
     }
+
+    setInterval(calcClock, 5000)
 
 
     return {

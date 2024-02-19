@@ -2,9 +2,10 @@
   <div class="container-fluid fredoka-font">
     <section class="row">
       <div class="col-1">
-        <p @click="toggleWantsToAdd" class="fs-1" title="Add To-do" role="button"><i class="mdi mdi-plus"></i></p>
+        <p @click="toggleWantsToAdd" class="fs-1" :title="wantsToAdd ? `Don't add` : 'Add To-do'" role="button"><i
+            class="mdi" :class="wantsToAdd ? 'mdi-minus' : 'mdi-plus'"></i></p>
       </div>
-      <div class="col-3">
+      <div class="col-8">
         <form @submit.prevent="addTodoListItem()" v-if="wantsToAdd" class="margin-align d-flex">
           <div>
             <input v-model="editable" type="text" class="form-control" id="todoDescription"
@@ -15,6 +16,10 @@
                 class="mdi mdi-arrow-right"></i></button>
           </div>
         </form>
+      </div>
+      <div class="col-3">
+        <p v-if="uncompletedTasks.length == 1" class="mb-0 mt-3 fs-5">{{ uncompletedTasks.length }} task left</p>
+        <p v-else class="mb-0 mt-3 fs-5">{{ uncompletedTasks.length }} tasks left</p>
       </div>
     </section>
     <section class="row">
@@ -45,6 +50,7 @@ export default {
       wantsToAdd,
       editable,
       todoListItems: computed(() => AppState.todoListItems),
+      uncompletedTasks: computed(() => AppState.todoListItems.filter(item => !item.completed)),
 
       toggleWantsToAdd() {
         wantsToAdd.value = !wantsToAdd.value;
@@ -52,7 +58,6 @@ export default {
 
       async addTodoListItem() {
         try {
-          debugger
           const todoListData = {}
           todoListData.description = editable.value
           await todoListItemsService.createListItem(todoListData)
@@ -72,6 +77,10 @@ export default {
 
 
 <style lang="scss" scoped>
+input {
+  width: 15rem;
+}
+
 .margin-align {
   margin-top: .7rem;
 }

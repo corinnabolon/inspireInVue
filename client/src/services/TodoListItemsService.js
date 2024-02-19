@@ -30,7 +30,7 @@ class TodoListItemsService {
 
   async removeListItem(itemId) {
     const res = await api.delete(`api/todolistitems/${itemId}`)
-    let foundIndex = AppState.todoListItems.findIndex((item => item.id == itemId))
+    let foundIndex = AppState.todoListItems.findIndex((item) => item.id == itemId)
     AppState.todoListItems.splice(foundIndex, 1)
   }
 

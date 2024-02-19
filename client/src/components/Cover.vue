@@ -1,13 +1,6 @@
 <template>
   <div v-if="wantsMainPage"
     class="container-fluid vh-100 d-flex flex-column justify-content-between py-3 coverImageStyle">
-
-    <!-- <section v-if="account" class="row">
-      {{ todoList }}
-      <div v-for="listItem in todoListItems" class="col-12">
-        <p>{{ listItem.description }}</p>
-      </div>
-    </section> -->
     <section class="row justify-content-between">
       <div class="col-1">
         <div class="text-bg fredoka-font mx-1 rounded text-center">
@@ -34,8 +27,8 @@
     <section v-if="quote" class="row justify-content-between align-items-center">
       <div class="col-1"></div>
       <div class="col-5 text-bg fredoka-font fs-5 d-flex flex-column align-items-center rounded-pill">
-        <p class="mb-0 me-4 ms-3 mt-2">{{ quote.content }}</p>
-        <p class="mb-2 me-4 align-self-end">{{ quote.author }}</p>
+        <p class="mb-0 me-4 ms-3 mt-2 show-author">{{ quote.content }}</p>
+        <p class="mb-2 me-4 align-self-end visible-on-hover">{{ quote.author }}</p>
       </div>
       <div @click="toggleWantsMainPage" class="col-1 text-bg fredoka-font rounded mx-1 text-center">
         <Login />
@@ -86,12 +79,12 @@ export default {
   props: { coverProp: { type: Image, required: true } },
 
   setup(props) {
-    const now = new Date();
-    const nowFormatted = now.toLocaleTimeString();
+    // const now = new Date();
+    // const nowFormatted = now.toLocaleTimeString();
     let wantsMainPage = ref(true);
 
     return {
-      nowFormatted,
+      nowFormatted: computed(() => AppState.now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })),
       coverImage: computed(() => `url(${props.coverProp.imgUrl})`),
       account: computed(() => AppState.account),
       user: computed(() => AppState.user),
@@ -142,5 +135,15 @@ export default {
   background-color: rgba(0, 0, 0, 0.363);
   backdrop-filter: blur(15px);
   overflow: hidden;
+}
+
+.visible-on-hover {
+  opacity: 0.0;
+  transition: all 300ms ease-in-out;
+}
+
+.show-author:hover+.visible-on-hover,
+.visible-on-hover:hover {
+  opacity: 1.0;
 }
 </style>
