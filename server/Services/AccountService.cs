@@ -1,3 +1,4 @@
+
 namespace inspireVue.Services;
 
 public class AccountService
@@ -24,11 +25,17 @@ public class AccountService
     return profile;
   }
 
-  internal Account Edit(Account editData, string userEmail)
+  internal Account Edit(Account editData, string userEmail, string userId)
   {
     Account original = GetProfileByEmail(userEmail);
+    if (original.Id != userId)
+    {
+      throw new Exception("Not your account to edit.");
+    }
     original.Name = editData.Name?.Length > 0 ? editData.Name : original.Name;
     original.Picture = editData.Picture?.Length > 0 ? editData.Picture : original.Picture;
+    original.WantsCelsius = editData.WantsCelsius ?? original.WantsCelsius;
+    original.WantsTwentyFourClock = editData.WantsTwentyFourClock ?? original.WantsTwentyFourClock;
     return _repo.Edit(original);
   }
 }

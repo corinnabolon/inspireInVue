@@ -12,6 +12,14 @@ class AccountService {
       logger.error('HAVE YOU STARTED YOUR SERVER YET???', err)
     }
   }
+
+  async toggleWantsCorF(tempBool) {
+    const wantsCelsius = { "wantsCelsius": tempBool }
+    logger.log(wantsCelsius)
+    const res = await api.put('account', wantsCelsius)
+    logger.log(res.data)
+    AppState.account = new Account(res.data)
+  }
 }
 
 export const accountService = new AccountService()

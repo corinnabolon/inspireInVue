@@ -10,8 +10,15 @@
       </div>
       <div class="col-1">
         <div class="text-bg fredoka-font mx-1 rounded text-center">
-          <p v-if="currentWeather" class="mt-2 mx-1 mb-1 py-2">{{ currentWeather.temperature }}°C</p>
-          <p v-else class="mt-2 mx-1 mb-1 py-2">Weather not available</p>
+          <div v-if="currentWeather">
+            <!-- TODO: Add account check here -->
+            <p v-if="!wantsCelsius" @click="toggleWantsCorF" role="button" class="mt-2 mx-1 mb-1 py-2">{{
+              tempInF }}°F</p>
+            <p v-else @click="toggleWantsCorF" role="button" class="mt-2 mx-1 mb-1 py-2">{{ tempInC }}°C</p>
+          </div>
+          <div v-else>
+            <p class="mt-2 mx-1 mb-1 py-2">Weather not available</p>
+          </div>
         </div>
         <div v-if="account.id" class="text-bg fredoka-font m-1 rounded text-center">
           <p class="mb-0 fs-1" title="To-do List" role="button" data-bs-toggle="modal" data-bs-target="#todoListModal"><i
@@ -73,6 +80,9 @@ import { Image } from "../models/Image.js";
 import TodoListComponent from "./TodoListComponent.vue";
 import ModalComponent from "./ModalComponent.vue";
 import Login from "./Login.vue";
+import Pop from "../utils/Pop.js";
+import { accountService } from "../services/AccountService.js";
+import { logger } from "../utils/Logger.js";
 
 export default {
 
@@ -81,9 +91,11 @@ export default {
   setup(props) {
     // const now = new Date();
     // const nowFormatted = now.toLocaleTimeString();
+    let wantsCelsius = ref(AppState.wantsCelsius)
     let wantsMainPage = ref(true);
 
     return {
+      wantsCelsius,
       nowFormatted: computed(() => AppState.now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })),
       coverImage: computed(() => `url(${props.coverProp.imgUrl})`),
       account: computed(() => AppState.account),
@@ -93,10 +105,25 @@ export default {
       quote: computed(() => AppState.quote),
       image: computed(() => AppState.image),
       currentWeather: computed(() => AppState.currentWeather),
+      tempInC: computed(() => Math.round(AppState.currentWeather.temperature)),
+      tempInF: computed(() => Math.round(AppState.currentWeather.temperature * 1.8 + 32)),
       wantsMainPage,
 
       toggleWantsMainPage() {
         wantsMainPage.value = !wantsMainPage.value;
+      },
+
+      async toggleWantsCorF() {
+        try {
+          let tempBool = AppState.account.wantsCelsius
+          logger.log("tempbool before", tempBool)
+          tempBool = !tempBool
+          logger.log("tempbool after", tempBool)
+          await accountService.toggleWantsCorF(tempBool)
+          logger.log("this.wantsCelsius", this.wantsCelsius)
+        } catch (error) {
+          Pop.error(error)
+        }
       }
     }
   },
