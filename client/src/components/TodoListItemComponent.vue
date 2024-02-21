@@ -2,11 +2,11 @@
   <div class="col-10 d-flex my-2">
     <input @change="toggleComplete(`${itemProp.id} `)" v-if="itemProp" class="me-2" type="checkbox" :checked="isChecked"
       :title="`Check off ${itemProp.description}`">
-    <p class="mb-0" :class="itemProp.completed ? 'strikethrough' : ''">{{
+    <p class="mb-0 fs-4" :class="itemProp.completed ? 'strikethrough' : ''">{{
       itemProp.description }}</p>
   </div>
   <div @click="removeListItem(`${itemProp.id}`)" class="col-1">
-    <p class="mb-0 fs-3" role="button" :title="`Delete ${itemProp.description}`"><i class="mdi mdi-delete"></i></p>
+    <p class="mb-0 fs-2" role="button" :title="`Delete ${itemProp.description}`"><i class="mdi mdi-delete"></i></p>
   </div>
 </template>
 

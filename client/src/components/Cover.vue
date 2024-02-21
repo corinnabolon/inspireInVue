@@ -91,11 +91,11 @@ export default {
   setup(props) {
     // const now = new Date();
     // const nowFormatted = now.toLocaleTimeString();
-    let wantsCelsius = ref(AppState.wantsCelsius)
+    // let wantsCelsius = ref(AppState.wantsCelsius);
     let wantsMainPage = ref(true);
 
     return {
-      wantsCelsius,
+      wantsCelsius: computed(() => AppState.account.wantsCelsius),
       nowFormatted: computed(() => AppState.now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })),
       coverImage: computed(() => `url(${props.coverProp.imgUrl})`),
       account: computed(() => AppState.account),
@@ -120,7 +120,6 @@ export default {
           tempBool = !tempBool
           logger.log("tempbool after", tempBool)
           await accountService.toggleWantsCorF(tempBool)
-          logger.log("this.wantsCelsius", this.wantsCelsius)
         } catch (error) {
           Pop.error(error)
         }

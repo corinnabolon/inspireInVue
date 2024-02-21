@@ -12,17 +12,17 @@
               aria-describedby="todoDescription" maxlength="1000" minlength="1">
           </div>
           <div>
-            <button class="btn btn-success" type="submit" role="button" title="Add this item to todo list"><i
+            <button class="btn btn-success ms-2" type="submit" role="button" title="Add this item to todo list"><i
                 class="mdi mdi-arrow-right"></i></button>
           </div>
         </form>
       </div>
       <div class="col-3">
-        <p v-if="uncompletedTasks.length == 1" class="mb-0 mt-3 fs-5">{{ uncompletedTasks.length }} task left</p>
-        <p v-else class="mb-0 mt-3 fs-5">{{ uncompletedTasks.length }} tasks left</p>
+        <p v-if="uncompletedTasks.length == 1" class="mb-0 mt-3 fs-5">{{ uncompletedTasks.length }} task</p>
+        <p v-else class="mb-0 mt-3 fs-5">{{ uncompletedTasks.length }} tasks</p>
       </div>
     </section>
-    <section class="row">
+    <section class="row ms-1 mb-2">
       <div v-for="todoListItem in todoListItems" class="d-flex">
         <TodoListItemComponent :itemProp="todoListItem" />
       </div>
@@ -61,7 +61,7 @@ export default {
           const todoListData = {}
           todoListData.description = editable.value
           await todoListItemsService.createListItem(todoListData)
-          editable.value = {}
+          editable.value = ""
           Pop.success("Item added to to-do list")
         } catch (error) {
           Pop.error(error)
@@ -82,6 +82,6 @@ input {
 }
 
 .margin-align {
-  margin-top: .7rem;
+  margin-top: .6rem;
 }
 </style>
