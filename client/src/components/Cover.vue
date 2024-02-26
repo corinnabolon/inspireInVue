@@ -28,7 +28,7 @@
     </section>
     <section class="row justify-content-center text-center">
       <div class="col-2 text-bg rounded-pill my-5">
-        <p class="mb-0 fs-1 fredoka-font">{{ nowFormatted }}</p>
+        <p @click="toggleWants12or24" role="button" class="mb-0 fs-1 fredoka-font">{{ nowFormatted }}</p>
       </div>
     </section>
     <section v-if="quote" class="row justify-content-between align-items-center">
@@ -54,6 +54,42 @@
         class="rounded-circle user-picture">
       <div class="col-6 text-bg fredoka-font rounded">
         <p class="fs-2">Bonjour, {{ account.name || user.name }}</p>
+        <div class="d-flex flex-column align-items-center">
+          <div v-if="!wantsTwentyFourClock" class="d-flex">
+            <button class="btn btn-selected me-3" title="Switch preference to 12-hour clock">
+              12
+            </button>
+            <button @click="toggleWants12or24" class="btn btn-unselected">
+              24
+            </button>
+          </div>
+          <div v-else class="d-flex">
+            <button @click="toggleWants12or24" class="btn btn-unselected me-3">
+              12
+            </button>
+            <button class="btn btn-selected" title="Switch preference to 24-hour clock">
+              24
+            </button>
+          </div>
+        </div>
+        <div class="d-flex flex-column align-items-center mt-2">
+          <div v-if="!wantsCelsius" class="d-flex">
+            <button @click="toggleWantsCorF" class="btn btn-unselected me-3" title="Switch preference to °C">
+              °C
+            </button>
+            <button class=" btn btn-selected">
+              °F
+            </button>
+          </div>
+          <div v-else class="d-flex">
+            <button class="btn btn-selected me-3">
+              °C
+            </button>
+            <button @click="toggleWantsCorF" class="btn btn-unselected" title="Switch preference to °F">
+              °F
+            </button>
+          </div>
+        </div>
       </div>
       <form>
         <!-- TODO: Insert user preferences here -->
@@ -96,7 +132,6 @@ export default {
 
     return {
       wantsCelsius: computed(() => AppState.account.wantsCelsius),
-      nowFormatted: computed(() => AppState.now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })),
       coverImage: computed(() => `url(${props.coverProp.imgUrl})`),
       account: computed(() => AppState.account),
       user: computed(() => AppState.user),
@@ -108,6 +143,15 @@ export default {
       tempInC: computed(() => Math.round(AppState.currentWeather.temperature)),
       tempInF: computed(() => Math.round(AppState.currentWeather.temperature * 1.8 + 32)),
       wantsMainPage,
+      wantsTwentyFourClock: computed(() => AppState.account.wantsTwentyFourClock),
+      nowFormatted: computed(() => {
+        if (AppState.account.wantsTwentyFourClock) {
+          return AppState.now.toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' });
+        } else {
+          let twelveHour = AppState.now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+          return twelveHour.replace(/AM|PM/, '')
+        }
+      }),
 
       toggleWantsMainPage() {
         wantsMainPage.value = !wantsMainPage.value;
@@ -116,14 +160,23 @@ export default {
       async toggleWantsCorF() {
         try {
           let tempBool = AppState.account.wantsCelsius
-          logger.log("tempbool before", tempBool)
           tempBool = !tempBool
-          logger.log("tempbool after", tempBool)
           await accountService.toggleWantsCorF(tempBool)
         } catch (error) {
           Pop.error(error)
         }
+      },
+
+      async toggleWants12or24() {
+        try {
+          let tempBool = AppState.account.wantsTwentyFourClock
+          tempBool = !tempBool
+          await accountService.toggleWants12or24(tempBool)
+        } catch (error) {
+          Pop.error(error)
+        }
       }
+
     }
   },
   components: { ModalComponent, TodoListComponent, Login }
@@ -154,7 +207,26 @@ export default {
   height: 30vh;
 }
 
+.btn-selected {
+  background-color: white;
+  color: black;
+  cursor: default;
+}
 
+.btn-selected:focus {
+  background-color: white;
+  color: black;
+  cursor: default;
+  border: none;
+}
+
+
+.btn-unselected {
+  color: lightslategray;
+  background-color: rgba(0, 0, 0, 0.363);
+  backdrop-filter: blur(15px);
+  overflow: hidden;
+}
 
 .text-bg {
   color: white;

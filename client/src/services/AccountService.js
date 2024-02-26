@@ -15,13 +15,18 @@ class AccountService {
 
   async toggleWantsCorF(tempBool) {
     const wantsCelsius = { "wantsCelsius": tempBool }
-    logger.log(wantsCelsius)
     AppState.account.wantsCelsius = tempBool
     // const res = await api.put('account', wantsCelsius)
     const res = await api.put('account', AppState.account)
-    logger.log(res.data)
     AppState.account.wantsCelsius = tempBool
-    logger.log("AppState.account.wantsCelsius", AppState.account.wantsCelsius)
+  }
+
+  async toggleWants12or24(tempBool) {
+    const wantsTwentyFourClock = { "wantsTwentyFourClock": tempBool }
+    AppState.account.wantsTwentyFourClock = tempBool
+    // const res = await api.put('account', wantsCelsius)
+    const res = await api.put('account', AppState.account)
+    AppState.account.wantsTwentyFourClock = tempBool
   }
 }
 

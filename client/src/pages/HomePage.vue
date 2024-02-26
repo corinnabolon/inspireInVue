@@ -45,7 +45,6 @@ export default {
 
     async function getMyList() {
       try {
-        logger.log("GetMyList triggered")
         await todoListsService.getMyList()
       } catch (error) {
         Pop.error(error)
@@ -86,6 +85,7 @@ export default {
       quote: computed(() => AppState.quote),
       image: computed(() => AppState.image),
       currentWeather: computed(() => AppState.currentWeather),
+
 
     }
   },
