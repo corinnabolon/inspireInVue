@@ -5,8 +5,8 @@ import { Image } from "../models/Image.js";
 
 class ImagesService {
 
-  async getImage() {
-    const res = await sandboxApi.get("api/images")
+  async getImage(selection) {
+    const res = await sandboxApi.get(`api/images?category=${selection}`)
     logger.log("image", res.data)
     AppState.image = new Image(res.data)
   }

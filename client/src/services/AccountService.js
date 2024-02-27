@@ -28,6 +28,17 @@ class AccountService {
     const res = await api.put('account', AppState.account)
     AppState.account.wantsTwentyFourClock = tempBool
   }
+
+  async addImageQuery(newQuery) {
+    debugger
+    logger.log(AppState.account.preferredImageTypes)
+    logger.log(newQuery)
+    AppState.account.preferredImageTypes.push(newQuery)
+    logger.log(AppState.account.preferredImageTypes)
+    logger.log(AppState.account.preferredImageTypes)
+    const res = await api.put('account', AppState.account)
+    logger.log(res.data)
+  }
 }
 
 export const accountService = new AccountService()

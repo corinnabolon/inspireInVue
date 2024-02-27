@@ -30,9 +30,9 @@ export default {
 
     onMounted(() => {
       getQuote();
-      getImage();
       getWeather();
       calcClock();
+      getImage();
     })
 
     watch(account, () => {
@@ -69,7 +69,10 @@ export default {
 
     async function getImage() {
       try {
-        await imagesService.getImage()
+        //TODO if logged in use query; if not, don't
+        let query = ["cat", "dog", "bird"]
+        let selection = (query[(Math.floor(Math.random() * query.length))])
+        await imagesService.getImage(selection)
       } catch (error) {
         Pop.error(error)
       }

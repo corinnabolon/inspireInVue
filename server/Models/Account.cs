@@ -10,6 +10,8 @@ public class Account
   public bool? WantsCelsius { get; set; }
 
   public bool? WantsTwentyFourClock { get; set; }
+
+  public string[] PreferredImageTypes { get; set; } = new string[0];
 }
 
 

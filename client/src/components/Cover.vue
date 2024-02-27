@@ -54,6 +54,14 @@
         class="rounded-circle user-picture">
       <div class="col-6 text-bg fredoka-font rounded">
         <p class="fs-2">Bonjour, {{ account.name || user.name }}</p>
+        <div class="d-flex">
+          <form @submit.prevent="addImageQuery">
+            <label for="query" class="form-label"></label>
+            <input v-model="editableQuery" type="text" if="query" class="form-conrol" placeholder="More image types..."
+              required maxLength="255" />
+            <button type="submit">Add</button>
+          </form>
+        </div>
         <div class="d-flex flex-column align-items-center">
           <div v-if="!wantsTwentyFourClock" class="d-flex">
             <button class="btn btn-selected me-3" title="Switch preference to 12-hour clock">
@@ -129,8 +137,10 @@ export default {
     // const nowFormatted = now.toLocaleTimeString();
     // let wantsCelsius = ref(AppState.wantsCelsius);
     let wantsMainPage = ref(true);
+    let editableQuery = ref("")
 
     return {
+      editableQuery,
       wantsCelsius: computed(() => AppState.account.wantsCelsius),
       coverImage: computed(() => `url(${props.coverProp.imgUrl})`),
       account: computed(() => AppState.account),
@@ -172,6 +182,15 @@ export default {
           let tempBool = AppState.account.wantsTwentyFourClock
           tempBool = !tempBool
           await accountService.toggleWants12or24(tempBool)
+        } catch (error) {
+          Pop.error(error)
+        }
+      },
+
+      async addImageQuery() {
+        try {
+          let newQuery = editableQuery.value
+          await accountService.addImageQuery(newQuery)
         } catch (error) {
           Pop.error(error)
         }

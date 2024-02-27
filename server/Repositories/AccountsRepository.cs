@@ -1,3 +1,6 @@
+using System.Text.Json;
+using Newtonsoft.Json;
+
 namespace inspireVue.Repositories;
 
 public class AccountsRepository
@@ -34,13 +37,16 @@ public class AccountsRepository
 
   internal Account Edit(Account update)
   {
+    update.PreferredImageTypes = JsonConvert.SerializeObject(update.PreferredImageTypes);
+
     string sql = @"
             UPDATE accounts
             SET 
               name = @Name,
               picture = @Picture,
               wantsCelsius = @WantsCelsius,
-              wantsTwentyFourClock = @WantsTwentyFourClock
+              wantsTwentyFourClock = @WantsTwentyFourClock,
+              preferredImageTypes = @PreferredImageTypes
             WHERE id = @Id;";
     _db.Execute(sql, update);
     return update;
