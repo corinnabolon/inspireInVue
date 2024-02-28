@@ -30,12 +30,12 @@ export default {
 
     onMounted(() => {
       getQuote();
-      getWeather();
+      // getWeather();
       calcClock();
-      getImage();
     })
 
     watch(account, () => {
+      getImage();
       getMyList();
     })
 
@@ -69,10 +69,13 @@ export default {
 
     async function getImage() {
       try {
+        let query = "cat"
         //TODO if logged in use query; if not, don't
-        let query = ["cat", "dog", "bird"]
-        let selection = (query[(Math.floor(Math.random() * query.length))])
-        await imagesService.getImage(selection)
+        if (AppState.account && AppState.account.preferredImageTypes) {
+          query = AppState.account.preferredImageTypes
+        }
+        // let selection = (query[(Math.floor(Math.random() * query.length))])
+        await imagesService.getImage(query)
       } catch (error) {
         Pop.error(error)
       }

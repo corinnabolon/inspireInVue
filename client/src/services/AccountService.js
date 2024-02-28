@@ -2,6 +2,7 @@ import { AppState } from '../AppState';
 import { Account } from '../models/Account.js'
 import { logger } from '../utils/Logger'
 import { api } from './AxiosService'
+import { imagesService } from "./ImagesService.js";
 
 class AccountService {
   async getAccount() {
@@ -30,14 +31,15 @@ class AccountService {
   }
 
   async addImageQuery(newQuery) {
-    debugger
     logger.log(AppState.account.preferredImageTypes)
     logger.log(newQuery)
-    AppState.account.preferredImageTypes.push(newQuery)
+    AppState.account.preferredImageTypes = newQuery
     logger.log(AppState.account.preferredImageTypes)
     logger.log(AppState.account.preferredImageTypes)
     const res = await api.put('account', AppState.account)
     logger.log(res.data)
+    await imagesService.getImage(AppState.account.preferredImageTypes)
+    AppState.account.preferredImageTypes = '"' + AppState.account.preferredImageTypes + '"'
   }
 }
 

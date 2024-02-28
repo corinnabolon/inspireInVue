@@ -11,7 +11,7 @@ public class Account
 
   public bool? WantsTwentyFourClock { get; set; }
 
-  public string[] PreferredImageTypes { get; set; } = new string[0];
+  public string PreferredImageTypes { get; set; }
 }
 
 

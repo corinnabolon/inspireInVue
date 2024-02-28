@@ -56,10 +56,13 @@
         <p class="fs-2">Bonjour, {{ account.name || user.name }}</p>
         <div class="d-flex">
           <form @submit.prevent="addImageQuery">
-            <label for="query" class="form-label"></label>
+            <label for="query" class="form-label">Image keyword: (currently <span class="fst-italic">{{
+              account.preferredImageTypes
+            }}</span>
+              )</label>
             <input v-model="editableQuery" type="text" if="query" class="form-conrol" placeholder="More image types..."
               required maxLength="255" />
-            <button type="submit">Add</button>
+            <button class="ms-2 btn btn-info" type="submit">Change</button>
           </form>
         </div>
         <div class="d-flex flex-column align-items-center">
@@ -141,6 +144,7 @@ export default {
 
     return {
       editableQuery,
+      account: computed(() => AppState.account),
       wantsCelsius: computed(() => AppState.account.wantsCelsius),
       coverImage: computed(() => `url(${props.coverProp.imgUrl})`),
       account: computed(() => AppState.account),
