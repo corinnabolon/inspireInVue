@@ -7,6 +7,7 @@ export class Account {
     this.wantsCelsius = data.wantsCelsius
     this.wantsTwentyFourClock = data.wantsTwentyFourClock
     this.preferredImageTypes = data.preferredImageTypes
+    this.preferredLocation = data.preferredLocation
     // TODO add additional properties if needed
   }
 }

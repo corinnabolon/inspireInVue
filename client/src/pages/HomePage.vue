@@ -32,6 +32,7 @@ export default {
       getQuote();
       // getWeather();
       calcClock();
+      getImage();
     })
 
     watch(account, () => {
@@ -67,15 +68,26 @@ export default {
       }
     }
 
+    // async function getImageWithoutQuery() {
+    //   try {
+    //     await imagesService.getImageWithoutQuery()
+    //   } catch (error) {
+    //     Pop.error(error)
+    //   }
+    // }
+
     async function getImage() {
       try {
-        let query = "cat"
         //TODO if logged in use query; if not, don't
         if (AppState.account && AppState.account.preferredImageTypes) {
-          query = AppState.account.preferredImageTypes
+          let query = AppState.account.preferredImageTypes
+          await imagesService.getImage(query)
+        } else {
+          setTimeout(async function () {
+            await imagesService.getImageWithoutQuery()
+          }, 5000);
         }
         // let selection = (query[(Math.floor(Math.random() * query.length))])
-        await imagesService.getImage(query)
       } catch (error) {
         Pop.error(error)
       }

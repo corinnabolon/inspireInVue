@@ -11,6 +11,11 @@ class ImagesService {
     AppState.image = new Image(res.data)
   }
 
+  async getImageWithoutQuery() {
+    const res = await sandboxApi.get("api/images")
+    AppState.image = new Image(res.data)
+  }
+
 }
 
 export const imagesService = new ImagesService()
