@@ -15,19 +15,27 @@ class AccountService {
   }
 
   async toggleWantsCorF(tempBool) {
-    const wantsCelsius = { "wantsCelsius": tempBool }
+    // const wantsCelsius = { "wantsCelsius": tempBool }
     AppState.account.wantsCelsius = tempBool
     // const res = await api.put('account', wantsCelsius)
     const res = await api.put('account', AppState.account)
     AppState.account.wantsCelsius = tempBool
   }
 
-  async toggleWants12or24(tempBool) {
-    const wantsTwentyFourClock = { "wantsTwentyFourClock": tempBool }
-    AppState.account.wantsTwentyFourClock = tempBool
+  async toggleWants12or24(clockBool) {
+    // const wantsTwentyFourClock = { "wantsTwentyFourClock": clockBool }
+    AppState.account.wantsTwentyFourClock = clockBool
     // const res = await api.put('account', wantsCelsius)
     const res = await api.put('account', AppState.account)
-    AppState.account.wantsTwentyFourClock = tempBool
+    AppState.account.wantsTwentyFourClock = clockBool
+  }
+
+  async changeLocation(newLocation) {
+    // const preferredLocation = { "preferredLocation": newLocation }
+    AppState.account.preferredLocation = newLocation
+    const res = await api.put('account', AppState.account)
+    AppState.account.preferredLocation = newLocation
+    logger.log(AppState.account.preferredLocation)
   }
 
   async addImageQuery(newQuery) {
@@ -39,7 +47,10 @@ class AccountService {
     const res = await api.put('account', AppState.account)
     logger.log(res.data)
     await imagesService.getImage(AppState.account.preferredImageTypes)
-    AppState.account.preferredImageTypes = '"' + AppState.account.preferredImageTypes + '"'
+    // if (AppState.account.preferredImageTypes[0] != '"') {
+    //   AppState.account.preferredImageTypes = '"' + AppState.account.preferredImageTypes + '"'
+    // }
+    logger.log("AppState.account.preferredImageTypes", AppState.account.preferredImageTypes)
   }
 }
 

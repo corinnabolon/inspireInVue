@@ -46,7 +46,8 @@ public class AccountsRepository
               picture = @Picture,
               wantsCelsius = @WantsCelsius,
               wantsTwentyFourClock = @WantsTwentyFourClock,
-              preferredImageTypes = @PreferredImageTypes
+              preferredImageTypes = @PreferredImageTypes,
+              preferredLocation = @PreferredLocation
             WHERE id = @Id;";
     _db.Execute(sql, update);
     return update;

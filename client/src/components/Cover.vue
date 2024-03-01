@@ -11,13 +11,15 @@
       <div class="col-1">
         <div class="text-bg fredoka-font mx-1 rounded text-center">
           <div v-if="currentWeather">
-            <!-- TODO: Add account check here -->
+            <p class="mt-2 mx-1 mb-1 py-2">Weather in {{ preferredLocation }}</p>
             <p v-if="!wantsCelsius" @click="toggleWantsCorF" role="button" class="mt-2 mx-1 mb-1 py-2">{{
               tempInF }}°F</p>
             <p v-else @click="toggleWantsCorF" role="button" class="mt-2 mx-1 mb-1 py-2">{{ tempInC }}°C</p>
           </div>
           <div v-else>
-            <p class="mt-2 mx-1 mb-1 py-2">Weather not available</p>
+            <p v-if="!preferredLocation" class="mt-2 mx-1 mb-1 py-2" @click="toggleWantsMainPage" role="button">Set your
+              location</p>
+            <p v-else class="mt-2 mx-1 mb-1 py-2">Weather not available</p>
           </div>
         </div>
         <div v-if="account.id" class="text-bg fredoka-font m-1 rounded text-center">
@@ -55,12 +57,25 @@
       <div class="col-6 text-bg fredoka-font rounded">
         <p class="fs-2">Bonjour, {{ account.name || user.name }}</p>
         <div class="d-flex">
+          <form @submit.prevent="addLocationQuery">
+            <label for="location" class="form-label">Weather Location: (currently <span v-if="account.preferredLocation"
+                class="fst-italic">{{
+                  account.preferredLocation
+                }}</span>
+              <span v-else>not specified</span>
+              )</label>
+            <input v-model="editableLocation" type="text" id="location" class="form-conrol" placeholder="Corvallis"
+              required maxLength="30" />
+            <button class="ms-2 btn btn-info" type="submit">Change</button>
+          </form>
+        </div>
+        <div class="d-flex">
           <form @submit.prevent="addImageQuery">
             <label for="query" class="form-label">Image keyword: (currently <span class="fst-italic">{{
               account.preferredImageTypes
             }}</span>
               )</label>
-            <input v-model="editableQuery" type="text" if="query" class="form-conrol" placeholder="More image types..."
+            <input v-model="editableQuery" type="text" id="query" class="form-conrol" placeholder="More image types..."
               required maxLength="255" />
             <button class="ms-2 btn btn-info" type="submit">Change</button>
           </form>
@@ -129,6 +144,7 @@ import ModalComponent from "./ModalComponent.vue";
 import Login from "./Login.vue";
 import Pop from "../utils/Pop.js";
 import { accountService } from "../services/AccountService.js";
+import { weatherService } from "../services/WeatherService.js";
 import { logger } from "../utils/Logger.js";
 
 export default {
@@ -141,9 +157,11 @@ export default {
     // let wantsCelsius = ref(AppState.wantsCelsius);
     let wantsMainPage = ref(true);
     let editableQuery = ref("")
+    let editableLocation = ref("")
 
     return {
       editableQuery,
+      editableLocation,
       account: computed(() => AppState.account),
       wantsCelsius: computed(() => AppState.account.wantsCelsius),
       coverImage: computed(() => `url(${props.coverProp.imgUrl})`),
@@ -154,6 +172,7 @@ export default {
       quote: computed(() => AppState.quote),
       image: computed(() => AppState.image),
       currentWeather: computed(() => AppState.currentWeather),
+      preferredLocation: computed(() => AppState.account.preferredLocation),
       tempInC: computed(() => Math.round(AppState.currentWeather.temperature)),
       tempInF: computed(() => Math.round(AppState.currentWeather.temperature * 1.8 + 32)),
       wantsMainPage,
@@ -183,9 +202,9 @@ export default {
 
       async toggleWants12or24() {
         try {
-          let tempBool = AppState.account.wantsTwentyFourClock
-          tempBool = !tempBool
-          await accountService.toggleWants12or24(tempBool)
+          let clockBool = AppState.account.wantsTwentyFourClock
+          clockBool = !clockBool
+          await accountService.toggleWants12or24(clockBool)
         } catch (error) {
           Pop.error(error)
         }
@@ -195,6 +214,19 @@ export default {
         try {
           let newQuery = editableQuery.value
           await accountService.addImageQuery(newQuery)
+          editableQuery = ref("")
+          //TODO Figure out how to fix the above so it erases what's in there but also doesn't add quotes to the property
+        } catch (error) {
+          Pop.error(error)
+        }
+      },
+
+      async addLocationQuery() {
+        try {
+          let newLocation = editableLocation.value
+          await accountService.changeLocation(newLocation)
+          editableLocation.value = ""
+          await weatherService.getWeather(newLocation)
         } catch (error) {
           Pop.error(error)
         }

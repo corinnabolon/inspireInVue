@@ -37,6 +37,7 @@ public class AccountService
     original.WantsCelsius = editData.WantsCelsius ?? original.WantsCelsius;
     original.WantsTwentyFourClock = editData.WantsTwentyFourClock ?? original.WantsTwentyFourClock;
     original.PreferredImageTypes = editData.PreferredImageTypes ?? original.PreferredImageTypes;
+    original.PreferredLocation = editData.PreferredLocation ?? original.PreferredLocation;
     return _repo.Edit(original);
   }
 }

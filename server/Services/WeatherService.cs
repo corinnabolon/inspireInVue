@@ -13,10 +13,10 @@ public class WeatherService
     _configuration = configuration;
   }
 
-  public async Task<string> GetCurrentWeather()
+  public async Task<string> GetCurrentWeather(string location)
   {
     string apiKey = _configuration["WeatherApiSettings:WeatherApiKey"];
-    string apiUrl = $"https://api.tomorrow.io/v4/weather/realtime?location=corvallis&apikey={apiKey}";
+    string apiUrl = $"https://api.tomorrow.io/v4/weather/realtime?location={location}&apikey={apiKey}";
 
     using (HttpClient httpClient = new HttpClient())
     {

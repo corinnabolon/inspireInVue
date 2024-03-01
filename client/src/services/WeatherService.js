@@ -5,11 +5,19 @@ import { AppState } from "../AppState.js";
 
 class WeatherService {
 
-  async getWeather() {
-    const res = await api.get('/Weather/Index');
-    logger.log(res.data)
-    AppState.currentWeather = new Weather(res.data)
-    logger.log(AppState.currentWeather)
+  // async getWeather() {
+  //   const res = await api.get('/Weather/Index');
+  //   logger.log(res.data)
+  //   AppState.currentWeather = new Weather(res.data)
+  //   logger.log(AppState.currentWeather)
+  // }
+
+
+  async getWeather(preferredLocation) {
+    const res = await api.post('/api/weather', { preferredLocation });
+    logger.log(res.data);
+    AppState.currentWeather = new Weather(res.data);
+    logger.log(AppState.currentWeather);
   }
 
 }

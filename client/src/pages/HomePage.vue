@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { onMounted, watch, computed } from "vue"
+import { onMounted, watch, computed, ref } from "vue"
 import { todoListsService } from "../services/TodoListsService.js"
 import Pop from "../utils/Pop.js"
 import { AppState } from "../AppState.js"
@@ -26,18 +26,19 @@ import { clocksService } from "../services/ClocksService.js"
 export default {
   setup() {
     const account = computed(() => AppState.account)
-    const accoundId = computed(() => AppState.accountId)
+    const accountId = ref(AppState.accountId)
 
     onMounted(() => {
       getQuote();
-      // getWeather();
       calcClock();
-      getImage();
+      setTimeout(getImage, 8000);
+      setTimeout(getWeather, 8000);
     })
 
-    watch(account, () => {
+    watch(accountId, () => {
       getImage();
       getMyList();
+      getWeather();
     })
 
     function calcClock() {
@@ -62,7 +63,11 @@ export default {
 
     async function getWeather() {
       try {
-        await weatherService.getWeather()
+        if (AppState.account.preferredLocation) {
+          let preferredLocation = AppState.account.preferredLocation
+          await weatherService.getWeather(preferredLocation)
+        }
+        return
       } catch (error) {
         Pop.error(error)
       }
@@ -79,13 +84,17 @@ export default {
     async function getImage() {
       try {
         //TODO if logged in use query; if not, don't
-        if (AppState.account && AppState.account.preferredImageTypes) {
+        if (AppState.account.preferredImageTypes) {
           let query = AppState.account.preferredImageTypes
-          await imagesService.getImage(query)
+          // await imagesService.getImage(query)
+          //TODO if query makes an error, say that in the POP error and get image without query
+          // TODO figure out why it keeps adding slashes and erroring out
+          await imagesService.getImageWithoutQuery()
         } else {
-          setTimeout(async function () {
-            await imagesService.getImageWithoutQuery()
-          }, 5000);
+          await imagesService.getImageWithoutQuery()
+          // setTimeout(async function () {
+          //   await imagesService.getImageWithoutQuery()
+          // }, 5000);
         }
         // let selection = (query[(Math.floor(Math.random() * query.length))])
       } catch (error) {

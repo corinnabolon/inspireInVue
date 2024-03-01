@@ -12,6 +12,8 @@ public class Account
   public bool? WantsTwentyFourClock { get; set; }
 
   public string PreferredImageTypes { get; set; }
+
+  public string PreferredLocation { get; set; }
 }
 
 

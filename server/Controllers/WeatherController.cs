@@ -11,18 +11,51 @@ using Newtonsoft.Json;
 [Controller]
 public class WeatherController : Controller
 {
+  private readonly Auth0Provider _auth0Provider;
   private readonly WeatherService _weatherService;
 
-  public WeatherController(WeatherService weatherService)
+  public WeatherController(WeatherService weatherService, Auth0Provider auth0Provider)
   {
     _weatherService = weatherService;
+    _auth0Provider = auth0Provider;
   }
 
 
-  [HttpGet]
-  public async Task<IActionResult> Index()
+  // [HttpGet]
+  // public async Task<IActionResult> Index()
+  // {
+  //   Account userInfo = await _auth0Provider.GetUserInfoAsync<Account>(HttpContext);
+  //   var preferredLocation = userInfo.PreferredLocation;
+  //   var currentWeatherJson = await _weatherService.GetCurrentWeather(preferredLocation);
+
+  //   if (currentWeatherJson == null)
+  //   {
+  //     Console.WriteLine("API request failed or returned null.");
+  //     return View("Error");
+  //   }
+
+  //   var currentWeather = JsonConvert.DeserializeObject<YourWeatherClass>(currentWeatherJson);
+
+  //   if (currentWeather == null)
+  //   {
+  //     Console.WriteLine("Deserialization failed.");
+  //     return BadRequest("Deserialization failed.");
+  //   }
+
+  //   if (currentWeather?.Data?.Values == null)
+  //   {
+  //     return BadRequest("No weather API response?");
+  //   }
+
+
+  [HttpPost]
+  [Route("api/weather")]
+  public async Task<IActionResult> GetWeatherData([FromBody] WeatherRequestModel model)
   {
-    var currentWeatherJson = await _weatherService.GetCurrentWeather();
+    var preferredLocation = model.PreferredLocation;
+
+    // Use preferredLocation to fetch weather data
+    var currentWeatherJson = await _weatherService.GetCurrentWeather(preferredLocation);
 
     if (currentWeatherJson == null)
     {
@@ -65,6 +98,11 @@ public class WeatherController : Controller
     //The above would have returned the view in my Views/Index.cshtml
 
     return Ok(weatherViewModel);
+  }
+
+  public class WeatherRequestModel
+  {
+    public string PreferredLocation { get; set; }
   }
 
 }
