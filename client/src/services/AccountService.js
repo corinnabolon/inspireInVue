@@ -43,7 +43,6 @@ class AccountService {
     logger.log(newQuery)
     AppState.account.preferredImageTypes = newQuery
     logger.log(AppState.account.preferredImageTypes)
-    logger.log(AppState.account.preferredImageTypes)
     const res = await api.put('account', AppState.account)
     logger.log(res.data)
     await imagesService.getImage(AppState.account.preferredImageTypes)

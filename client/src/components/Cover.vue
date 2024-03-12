@@ -13,7 +13,7 @@
           <div v-if="currentWeather">
             <p class="mt-2 mx-1 mb-1 py-2">Weather in {{ preferredLocation }}</p>
             <p v-if="!wantsCelsius" @click="toggleWantsCorF" role="button" class="mt-2 mx-1 mb-1 py-2">{{
-              tempInF }}°F</p>
+    tempInF }}°F</p>
             <p v-else @click="toggleWantsCorF" role="button" class="mt-2 mx-1 mb-1 py-2">{{ tempInC }}°C</p>
           </div>
           <div v-else>
@@ -23,8 +23,9 @@
           </div>
         </div>
         <div v-if="account.id" class="text-bg fredoka-font m-1 rounded text-center">
-          <p class="mb-0 fs-1" title="To-do List" role="button" data-bs-toggle="modal" data-bs-target="#todoListModal"><i
-              class="mdi mdi-notebook"></i></p>
+          <p class="mb-0 fs-1" title="To-do List" role="button" data-bs-toggle="modal" data-bs-target="#todoListModal">
+            <i class="mdi mdi-notebook"></i>
+          </p>
         </div>
       </div>
     </section>
@@ -60,27 +61,28 @@
           <form @submit.prevent="addLocationQuery">
             <label for="location" class="form-label">Weather Location: (currently <span v-if="account.preferredLocation"
                 class="fst-italic">{{
-                  account.preferredLocation
-                }}</span>
+    account.preferredLocation
+  }}</span>
               <span v-else>not specified</span>
               )</label>
             <input v-model="editableLocation" type="text" id="location" class="form-conrol" placeholder="Corvallis"
-              required maxLength="30" />
+              required maxLength="30" pattern="^[A-Za-z]+$"
+              title="Only alphabetical characters are allowed in the location." />
             <button class="ms-2 btn btn-info" type="submit">Change</button>
           </form>
         </div>
         <div class="d-flex">
           <form @submit.prevent="addImageQuery">
             <label for="query" class="form-label">Image keyword: (currently <span class="fst-italic">{{
-              account.preferredImageTypes
-            }}</span>
+    preferredImageTypes
+  }}</span>
               )</label>
             <input v-model="editableQuery" type="text" id="query" class="form-conrol" placeholder="More image types..."
-              required maxLength="255" />
+              maxLength="255" pattern="^[A-Za-z]+$" title="Only alphabetical characters are allowed in the keyword." />
             <button class="ms-2 btn btn-info" type="submit">Change</button>
           </form>
         </div>
-        <div class="d-flex flex-column align-items-center">
+        <div class=" d-flex flex-column align-items-center">
           <div v-if="!wantsTwentyFourClock" class="d-flex">
             <button class="btn btn-selected me-3" title="Switch preference to 12-hour clock">
               12
@@ -128,6 +130,7 @@
     <template #modalTitle>
       <p class="fredoka-font fs-3">To-Do List</p>
     </template>
+
     <template #modalBody>
       <TodoListComponent />
     </template>
@@ -173,6 +176,13 @@ export default {
       image: computed(() => AppState.image),
       currentWeather: computed(() => AppState.currentWeather),
       preferredLocation: computed(() => AppState.account.preferredLocation),
+      preferredImageTypes: computed(() => {
+        if (AppState.account.preferredImageTypes == "" || "''") {
+          return "none"
+        } else {
+          return AppState.account.preferredImageTypes
+        }
+      }),
       tempInC: computed(() => Math.round(AppState.currentWeather.temperature)),
       tempInF: computed(() => Math.round(AppState.currentWeather.temperature * 1.8 + 32)),
       wantsMainPage,
@@ -185,6 +195,7 @@ export default {
           return twelveHour.replace(/AM|PM/, '')
         }
       }),
+
 
       toggleWantsMainPage() {
         wantsMainPage.value = !wantsMainPage.value;
@@ -213,8 +224,9 @@ export default {
       async addImageQuery() {
         try {
           let newQuery = editableQuery.value
+          newQuery = encodeURIComponent(newQuery)
           await accountService.addImageQuery(newQuery)
-          editableQuery = ref("")
+          editableQuery.value = ""
           //TODO Figure out how to fix the above so it erases what's in there but also doesn't add quotes to the property
         } catch (error) {
           Pop.error(error)

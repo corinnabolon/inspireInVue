@@ -32,13 +32,13 @@ export default {
       getQuote();
       calcClock();
       setTimeout(getImage, 8000);
-      setTimeout(getWeather, 8000);
+      // setTimeout(getWeather, 8000);
     })
 
     watch(accountId, () => {
       getImage();
       getMyList();
-      getWeather();
+      // getWeather();
     })
 
     function calcClock() {
@@ -86,10 +86,14 @@ export default {
         //TODO if logged in use query; if not, don't
         if (AppState.account.preferredImageTypes) {
           let query = AppState.account.preferredImageTypes
+          try {
+            await imagesService.getImage(query)
+          } catch (error) {
+            await imagesService.getImageWithoutQuery()
+          }
           // await imagesService.getImage(query)
           //TODO if query makes an error, say that in the POP error and get image without query
           // TODO figure out why it keeps adding slashes and erroring out
-          await imagesService.getImageWithoutQuery()
         } else {
           await imagesService.getImageWithoutQuery()
           // setTimeout(async function () {
