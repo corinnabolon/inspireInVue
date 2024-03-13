@@ -40,84 +40,103 @@
         <p class="mb-0 me-4 ms-3 mt-2 show-author">{{ quote.content }}</p>
         <p class="mb-2 me-4 align-self-end visible-on-hover">{{ quote.author }}</p>
       </div>
-      <div @click="toggleWantsMainPage" class="col-1 text-bg fredoka-font rounded mx-1 text-center">
+      <div @click="toggleWantsMainPage" class="col-1 fredoka-font rounded mx-1 text-center">
         <Login />
       </div>
     </section>
   </div>
   <div v-else class="container-fluid vh-100 d-flex flex-column justify-content-between coverImageStyle">
-    <section class="row">
+    <section class="row justify-content-between">
       <div class="col-2">
         <p @click="toggleWantsMainPage" class="text-bg fredoka-font rounded py-2 px-2 mt-2" role="button"><i
             class="mdi mdi-arrow-left"></i>Go Back</p>
       </div>
+      <div class="col-1 py-2 px-2 mt-2">
+        <Login />
+      </div>
     </section>
-    <section class="row justify-content-center text-center position-relative">
+    <section class="row justify-content-center text-center position-relative fredoka-font">
       <img v-if="account.picture || user.picture" :src="account.picture || user.picture" alt="Profile picture"
         class="rounded-circle user-picture">
-      <div class="col-6 text-bg fredoka-font rounded">
+      <div class="col-6 text-bg fredoka-font rounded my-5 py-5">
         <p class="fs-2">Bonjour, {{ account.name || user.name }}</p>
-        <div class="d-flex">
-          <form @submit.prevent="addLocationQuery">
-            <label for="location" class="form-label">Weather Location: (currently <span v-if="account.preferredLocation"
-                class="fst-italic">{{
+        <!-- //TODO: Replace with time of day and check other stretch goals -->
+        <section class="row">
+          <div class="col-5 text-start ms-3">
+            <form id="weatherLocationForm" @submit.prevent="addLocationQuery">
+              <p class="form-label fs-5 mb-0">Weather Location:</p>
+              <p class="form-label fs-5">(currently
+                <span v-if="account.preferredLocation" class="fst-italic">{{
     account.preferredLocation
   }}</span>
-              <span v-else>not specified</span>
-              )</label>
+                <span v-else>not specified</span>
+                )
+              </p>
+            </form>
+          </div>
+          <div class="col-6">
             <input v-model="editableLocation" type="text" id="location" class="form-conrol" placeholder="Corvallis"
               required maxLength="30" pattern="^[A-Za-z]+$"
               title="Only alphabetical characters are allowed in the location." />
-            <button class="ms-2 btn btn-info" type="submit">Change</button>
-          </form>
-        </div>
-        <div class="d-flex">
-          <form @submit.prevent="addImageQuery">
-            <label for="query" class="form-label">Image keyword: (currently <span class="fst-italic">{{
+            <button form="weatherLocationForm" class="ms-2 btn btn-info" type="submit">Change</button>
+          </div>
+          <div class="col-5 text-start ms-3">
+            <form id="imageKeywordForm" @submit.prevent="addImageQuery">
+              <p class="form-label fs-5 mb-0">Image keyword:</p>
+              <p class="form-label fs-5">(currently <span class="fst-italic">{{
     preferredImageTypes
   }}</span>
-              )</label>
+                )</p>
+            </form>
+          </div>
+          <div class="col-6 mt-3">
             <input v-model="editableQuery" type="text" id="query" class="form-conrol" placeholder="More image types..."
               maxLength="255" pattern="^[A-Za-z]+$" title="Only alphabetical characters are allowed in the keyword." />
-            <button class="ms-2 btn btn-info" type="submit">Change</button>
-          </form>
-        </div>
-        <div class=" d-flex flex-column align-items-center">
-          <div v-if="!wantsTwentyFourClock" class="d-flex">
-            <button class="btn btn-selected me-3" title="Switch preference to 12-hour clock">
-              12
-            </button>
-            <button @click="toggleWants12or24" class="btn btn-unselected">
-              24
-            </button>
+            <button form="imageKeywordForm" class="ms-2 btn btn-info" type="submit">Change</button>
           </div>
-          <div v-else class="d-flex">
-            <button @click="toggleWants12or24" class="btn btn-unselected me-3">
-              12
-            </button>
-            <button class="btn btn-selected" title="Switch preference to 24-hour clock">
-              24
-            </button>
+          <div class="col-5 text-start ms-3 mt-3">
+            <p class="mb-0 fs-5">Clock Type:</p>
           </div>
-        </div>
-        <div class="d-flex flex-column align-items-center mt-2">
-          <div v-if="!wantsCelsius" class="d-flex">
-            <button @click="toggleWantsCorF" class="btn btn-unselected me-3" title="Switch preference to °C">
-              °C
-            </button>
-            <button class=" btn btn-selected">
-              °F
-            </button>
+          <div class="col-6 d-flex flex-column align-items-start ms-2 mt-3">
+            <div v-if="!wantsTwentyFourClock" class="d-flex">
+              <button class="btn btn-selected me-3" title="Switch preference to 12-hour clock">
+                12
+              </button>
+              <button @click="toggleWants12or24" class="btn btn-unselected">
+                24
+              </button>
+            </div>
+            <div v-else class="d-flex">
+              <button @click="toggleWants12or24" class="btn btn-unselected me-3">
+                12
+              </button>
+              <button class="btn btn-selected" title="Switch preference to 24-hour clock">
+                24
+              </button>
+            </div>
           </div>
-          <div v-else class="d-flex">
-            <button class="btn btn-selected me-3">
-              °C
-            </button>
-            <button @click="toggleWantsCorF" class="btn btn-unselected" title="Switch preference to °F">
-              °F
-            </button>
+          <div class="col-5 text-start ms-3 mt-3">
+            <p class="mb-0 fs-5">Temperature Type:</p>
           </div>
-        </div>
+          <div class="col-6 d-flex flex-column mt-3 ms-2 align-items-start">
+            <div v-if="!wantsCelsius" class="d-flex">
+              <button @click="toggleWantsCorF" class="btn btn-unselected me-3" title="Switch preference to °C">
+                °C
+              </button>
+              <button class=" btn btn-selected">
+                °F
+              </button>
+            </div>
+            <div v-else class="d-flex">
+              <button class="btn btn-selected me-3">
+                °C
+              </button>
+              <button @click="toggleWantsCorF" class="btn btn-unselected" title="Switch preference to °F">
+                °F
+              </button>
+            </div>
+          </div>
+        </section>
       </div>
       <form>
         <!-- TODO: Insert user preferences here -->
@@ -254,10 +273,11 @@ export default {
 <style lang="scss" scoped>
 .user-picture {
   position: absolute;
-  width: 10dvw;
+  width: 9dvw;
   object-fit: cover;
   left: 45%;
-  bottom: 53%;
+  bottom: 81%;
+  z-index: 1;
 }
 
 .coverImageStyle {
@@ -290,13 +310,6 @@ export default {
 
 .btn-unselected {
   color: lightslategray;
-  background-color: rgba(0, 0, 0, 0.363);
-  backdrop-filter: blur(15px);
-  overflow: hidden;
-}
-
-.text-bg {
-  color: white;
   background-color: rgba(0, 0, 0, 0.363);
   backdrop-filter: blur(15px);
   overflow: hidden;

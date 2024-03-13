@@ -36,6 +36,13 @@ export default {
     "wdth" 100;
 }
 
+.text-bg {
+  color: white;
+  background-color: rgba(0, 0, 0, 0.363);
+  backdrop-filter: blur(15px);
+  overflow: hidden;
+}
+
 footer {
   display: grid;
   place-content: center;
