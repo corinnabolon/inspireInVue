@@ -12,4 +12,6 @@ public class WeatherValues
   public decimal Humidity { get; set; }
   public decimal PrecipitationProbability { get; set; }
   public decimal Temperature { get; set; }
+
+  public decimal WeatherCode { get; set; }
 }

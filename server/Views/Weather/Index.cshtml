@@ -14,23 +14,24 @@
   <p id="humidity">Humidity: @Model.Humidity</p>
   <p id="precipitation">Precipitation Probability: @Model.PrecipitationProbability</p>
   <p id="temperature">Temperature: @Model.Temperature</p>
+  <p id="weatherCode" ?Weather Code: @Model.WeatherCode</p>
 
-  <!-- Add other elements as needed for your view -->
+    <!-- Add other elements as needed for your view -->
 
-  <script>
-    console.log("Script is running!");
-    document.addEventListener("DOMContentLoaded", function () {
-      // Access the weather data directly from the HTML using JavaScript
-      let humidity = parseFloat(document.getElementById('humidity').innerText.split(":")[1].trim());
-      let precipitation = parseFloat(document.getElementById('precipitation').innerText.split(":")[1].trim());
-      let temperature = parseFloat(document.getElementById('temperature').innerText.split(":")[1].trim());
+    <script>
+      console.log("Script is running!");
+      document.addEventListener("DOMContentLoaded", function () {
+        // Access the weather data directly from the HTML using JavaScript
+        let humidity = parseFloat(document.getElementById('humidity').innerText.split(":")[1].trim());
+        let precipitation = parseFloat(document.getElementById('precipitation').innerText.split(":")[1].trim());
+        let temperature = parseFloat(document.getElementById('temperature').innerText.split(":")[1].trim());
 
-      // Use the variables as needed in your JavaScript logic
-      console.log('Humidity:', humidity);
-      console.log('Precipitation Probability:', precipitation);
-      console.log('Temperature:', temperature);
-    });
-  </script>
+        // Use the variables as needed in your JavaScript logic
+        console.log('Humidity:', humidity);
+        console.log('Precipitation Probability:', precipitation);
+        console.log('Temperature:', temperature);
+      });
+    </script>
 </body>
 
 </html>

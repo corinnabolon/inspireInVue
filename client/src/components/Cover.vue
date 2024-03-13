@@ -180,6 +180,33 @@ export default {
     let wantsMainPage = ref(true);
     let editableQuery = ref("")
     let editableLocation = ref("")
+    const baseURL1 = "https://github.com/Tomorrow-IO-API/tomorrow-weather-codes/tree/master/V2_icons/small/png/"
+    const baseURL2 = "https://github.com/Tomorrow-IO-API/tomorrow-weather-codes/tree/master/V1_icons/color/"
+    const weatherIcons = {
+      "1000": `${baseURL1}10000_clear_small.png`,
+      "1100": `${baseURL1}11000_mostly_clear_small.png`,
+      "1101": `${baseURL1}11010_partly_cloudy_small.png`,
+      "1102": `${baseURL1}11020_mostly_cloudy_small.png`,
+      "1001": `${baseURL2}cloudy.svg`,
+      "2000": `${baseURL2}fog.svg`,
+      "2100": `${baseURL1}21000_fog_light_small.png`,
+      "4000": `${baseURL1}40000_drizzle_small.png`,
+      "4001": `${baseURL2}rain.svg`,
+      "4200": `${baseURL1}42000_rain_light_small.png`,
+      "4201": `${baseURL1}42010_rain_heavy_small.png`,
+      "5000": `${baseURL2}snow.svg`,
+      "5001": `${baseURL1}50010_flurries_small.png`,
+      "5100": `${baseURL1}51000_snow_light_small.png`,
+      "5101": `${baseURL1}51010_snow_heavy_small.png`,
+      "6000": `${baseURL1}60000_freezing_rain_drizzle_small.png`,
+      "6001": `${baseURL2}freezing_rain.svg`,
+      "6200": `${baseURL1}62000_freezing_rain_light_small.png`,
+      "6201": `${baseURL1}62010_freezing_rain_heavy_small.png`,
+      "7000": `${baseURL2}ice_pellets.svg`,
+      "7101": `${baseURL1}71010_ice_pellets_heavy_small.png`,
+      "7102": `${baseURL1}71020_ice_pellets_light_small.png`,
+      "8000": `${baseURL1}80000_tstorm_small.png`
+    };
 
     return {
       editableQuery,

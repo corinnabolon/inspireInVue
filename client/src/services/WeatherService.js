@@ -15,7 +15,7 @@ class WeatherService {
 
   async getWeather(preferredLocation) {
     const res = await api.post('/api/weather', { preferredLocation });
-    logger.log(res.data);
+    logger.log("Weather data", res.data);
     AppState.currentWeather = new Weather(res.data);
     logger.log(AppState.currentWeather);
   }

@@ -85,6 +85,7 @@ public class WeatherController : Controller
       Humidity = currentWeather.Data.Values.Humidity,
       PrecipitationProbability = currentWeather.Data.Values.PrecipitationProbability,
       Temperature = currentWeather.Data.Values.Temperature,
+      WeatherCode = currentWeather.Data.Values.WeatherCode,
       // Map other properties as needed
     };
 

@@ -32,13 +32,13 @@ export default {
       getQuote();
       calcClock();
       setTimeout(getImage, 8000);
-      // setTimeout(getWeather, 8000);
+      setTimeout(getWeather, 8000);
     })
 
     watch(accountId, () => {
       getImage();
       getMyList();
-      // getWeather();
+      getWeather();
     })
 
     function calcClock() {

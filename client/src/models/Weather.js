@@ -3,5 +3,6 @@ export class Weather {
     this.humidity = data.humidity
     this.precipitationProbability = data.precipitationProbability
     this.temperature = data.temperature
+    this.weatherCode = data.weatherCode
   }
 }
