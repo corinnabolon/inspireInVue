@@ -12,6 +12,10 @@
         <div class="text-bg fredoka-font mx-1 rounded text-center">
           <div v-if="currentWeather">
             <p class="mt-2 mx-1 mb-1 py-2">Weather in {{ preferredLocation }}</p>
+            <div>
+              <p v-if='weatherIcon != ""'>{{ weatherIcon }}</p>
+              <p v-else></p>
+            </div>
             <p v-if="!wantsCelsius" @click="toggleWantsCorF" role="button" class="mt-2 mx-1 mb-1 py-2">{{
     tempInF }}°F</p>
             <p v-else @click="toggleWantsCorF" role="button" class="mt-2 mx-1 mb-1 py-2">{{ tempInC }}°C</p>
@@ -159,7 +163,7 @@
 
 <script>
 import { AppState } from '../AppState';
-import { computed, reactive, onMounted, ref } from 'vue';
+import { computed, reactive, onMounted, watch, ref } from 'vue';
 import { Image } from "../models/Image.js";
 import TodoListComponent from "./TodoListComponent.vue";
 import ModalComponent from "./ModalComponent.vue";
@@ -180,6 +184,8 @@ export default {
     let wantsMainPage = ref(true);
     let editableQuery = ref("")
     let editableLocation = ref("")
+    let weatherIcon = ref("")
+    const currentWeather = ref(AppState.currentWeather)
     const baseURL1 = "https://github.com/Tomorrow-IO-API/tomorrow-weather-codes/tree/master/V2_icons/small/png/"
     const baseURL2 = "https://github.com/Tomorrow-IO-API/tomorrow-weather-codes/tree/master/V1_icons/color/"
     const weatherIcons = {
@@ -208,7 +214,28 @@ export default {
       "8000": `${baseURL1}80000_tstorm_small.png`
     };
 
+    function findWeatherIcon() {
+      if (AppState.currentWeather) {
+        logger.log("This is the findWeatherIcon function", AppState.currentWeather.weatherCode)
+        for (let key in weatherIcons) {
+          if (key == AppState.currentWeather.weatherCode) {
+            weatherIcon = weatherIcons[key]
+            logger.log(weatherIcon)
+          }
+        }
+      } else {
+        logger.log("no AppState.currentWeather")
+      }
+    }
+
+    onMounted(() => {
+      setTimeout(findWeatherIcon, 5000)
+    })
+
+    //TODO: after login get weather and new image (if needed) automatically
+
     return {
+      weatherIcon,
       editableQuery,
       editableLocation,
       account: computed(() => AppState.account),
