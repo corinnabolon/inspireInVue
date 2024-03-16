@@ -13,8 +13,7 @@
           <div v-if="currentWeather">
             <p class="mt-2 mx-1 mb-1 py-2">Weather in {{ preferredLocation }}</p>
             <div>
-              <p v-if='weatherIcon != ""'>{{ weatherIcon }}</p>
-              <p v-else></p>
+              <img v-if="weatherIcon != ''" :src="weatherIcon" title="Powered by Tomorrow.io" class="weather-icon" />
             </div>
             <p v-if="!wantsCelsius" @click="toggleWantsCorF" role="button" class="mt-2 mx-1 mb-1 py-2">{{
     tempInF }}°F</p>
@@ -178,16 +177,12 @@ export default {
   props: { coverProp: { type: Image, required: true } },
 
   setup(props) {
-    // const now = new Date();
-    // const nowFormatted = now.toLocaleTimeString();
-    // let wantsCelsius = ref(AppState.wantsCelsius);
     let wantsMainPage = ref(true);
     let editableQuery = ref("")
     let editableLocation = ref("")
-    let weatherIcon = ref("")
     const currentWeather = ref(AppState.currentWeather)
-    const baseURL1 = "https://github.com/Tomorrow-IO-API/tomorrow-weather-codes/tree/master/V2_icons/small/png/"
-    const baseURL2 = "https://github.com/Tomorrow-IO-API/tomorrow-weather-codes/tree/master/V1_icons/color/"
+    const baseURL1 = "https://raw.githubusercontent.com/Tomorrow-IO-API/tomorrow-weather-codes/master/V2_icons/small/png/"
+    const baseURL2 = "https://raw.githubusercontent.com/Tomorrow-IO-API/tomorrow-weather-codes/master/V1_icons/color/"
     const weatherIcons = {
       "1000": `${baseURL1}10000_clear_small.png`,
       "1100": `${baseURL1}11000_mostly_clear_small.png`,
@@ -214,28 +209,21 @@ export default {
       "8000": `${baseURL1}80000_tstorm_small.png`
     };
 
-    function findWeatherIcon() {
-      if (AppState.currentWeather) {
-        logger.log("This is the findWeatherIcon function", AppState.currentWeather.weatherCode)
-        for (let key in weatherIcons) {
-          if (key == AppState.currentWeather.weatherCode) {
-            weatherIcon = weatherIcons[key]
-            logger.log(weatherIcon)
-          }
-        }
-      } else {
-        logger.log("no AppState.currentWeather")
-      }
-    }
-
-    onMounted(() => {
-      setTimeout(findWeatherIcon, 5000)
-    })
-
     //TODO: after login get weather and new image (if needed) automatically
 
     return {
-      weatherIcon,
+      weatherIcon: computed(() => {
+        if (AppState.currentWeather) {
+          logger.log("This is the findWeatherIcon function", AppState.currentWeather.weatherCode)
+          for (let key in weatherIcons) {
+            if (key == AppState.currentWeather.weatherCode) {
+              return weatherIcons[key]
+            }
+          }
+        } else {
+          return
+        }
+      }),
       editableQuery,
       editableLocation,
       account: computed(() => AppState.account),
@@ -332,6 +320,11 @@ export default {
   left: 45%;
   bottom: 81%;
   z-index: 1;
+}
+
+.weather-icon {
+  max-height: 5dvh;
+  width: auto;
 }
 
 .coverImageStyle {
