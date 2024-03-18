@@ -31,4 +31,14 @@ public class JournalsService
     }
     return journal;
   }
+
+  internal Journal GetMyJournal(string userId)
+  {
+    Journal journal = _repository.GetMyJournal(userId);
+    if (journal == null)
+    {
+      throw new Exception("You don't have a journal");
+    }
+    return journal;
+  }
 }

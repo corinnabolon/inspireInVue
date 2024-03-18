@@ -1,4 +1,5 @@
 
+
 namespace inspireVue.Repositories;
 
 public class JournalsRepository
@@ -26,6 +27,15 @@ public class JournalsRepository
     string sql = @"SELECT * from journals WHERE id = @journalId;";
 
     Journal journal = _db.Query<Journal>(sql, new { journalId }).FirstOrDefault();
+
+    return journal;
+  }
+
+  internal Journal GetMyJournal(string userId)
+  {
+    string sql = @"SELECT * from journals WHERE accountId = @userId;";
+
+    Journal journal = _db.Query<Journal>(sql, new { userId }).FirstOrDefault();
 
     return journal;
   }

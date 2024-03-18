@@ -1,6 +1,6 @@
 namespace inspireVue.Models;
 
-public class JournalEntrys
+public class JournalEntry
 {
   public int Id { get; set; }
   public DateTime CreatedAt { get; set; }
