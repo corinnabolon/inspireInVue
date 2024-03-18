@@ -62,8 +62,7 @@
       <img v-if="account.picture || user.picture" :src="account.picture || user.picture" alt="Profile picture"
         class="rounded-circle user-picture">
       <div class="col-6 text-bg fredoka-font rounded my-5 py-5">
-        <p class="fs-2">Bonjour, {{ account.name || user.name }}</p>
-        <!-- //TODO: Replace with time of day and check other stretch goals -->
+        <p class="fs-2">{{ greeting }}, {{ account.name || user.name }}</p>
         <section class="row">
           <div class="col-5 text-start ms-3">
             <form id="weatherLocationForm" @submit.prevent="addLocationQuery">
@@ -254,6 +253,16 @@ export default {
         } else {
           let twelveHour = AppState.now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
           return twelveHour.replace(/AM|PM/, '')
+        }
+      }),
+      greeting: computed(() => {
+        let time = AppState.now.toLocaleTimeString('en-US', { hour12: false, hour: '2-digit' });
+        if (time > 3 && time < 12) {
+          return "Good morning"
+        } else if (time > 12 && time < 17) {
+          return "Good afternoon"
+        } else {
+          return "Good evening"
         }
       }),
 
