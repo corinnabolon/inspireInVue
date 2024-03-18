@@ -17,7 +17,7 @@ public class JournalEntrysController : ControllerBase
   [Authorize]
   [HttpPost]
 
-  public async Task<ActionResult<JournalEntry>> CreatrJournalEntry([FromBody] JournalEntry journalEntryData)
+  public async Task<ActionResult<JournalEntry>> CreateJournalEntry([FromBody] JournalEntry journalEntryData)
   {
     try
     {
@@ -48,5 +48,6 @@ public class JournalEntrysController : ControllerBase
   //   }
   // }
 
+  //TODO: add get and delete methods
 
 }

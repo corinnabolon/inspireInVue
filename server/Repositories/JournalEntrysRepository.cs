@@ -1,4 +1,5 @@
 
+
 namespace inspireVue.Repositories;
 
 public class JournalEntrysRepository
@@ -18,6 +19,14 @@ public class JournalEntrysRepository
 
     JournalEntry journalEntry = _db.Query<JournalEntry>(sql, journalEntryData).FirstOrDefault();
 
+    return journalEntry;
+  }
+
+  internal JournalEntry GetJournalEntryByJournalId(int journalId)
+  {
+    string sql = @"SELECT * FROM journalentrys WHERE journalId = @journalId;";
+
+    JournalEntry journalEntry = _db.Query<JournalEntry>(sql, new { journalId }).FirstOrDefault();
     return journalEntry;
   }
 }

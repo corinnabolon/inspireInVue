@@ -26,6 +26,17 @@ public class JournalEntrysService
     return journalEntry;
   }
 
+  internal JournalEntry GetJournalEntryByJournalId(int journalId, string userId)
+  {
+    Journal journal = _journalsService.GetMyJournal(userId);
+    if (journalId != journal.Id)
+    {
+      throw new Exception("Not your journal entry to get");
+    }
+    JournalEntry journalEntry = _repository.GetJournalEntryByJournalId(journalId);
+    return journalEntry;
+  }
+
   //   internal JournalEntry GetJournalEntry()
   // {
   //   JournalEntry journalEntry = _repository.GetJournalEntry();
