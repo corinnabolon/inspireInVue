@@ -1,5 +1,9 @@
 
 
+
+
+
+
 namespace inspireVue.Repositories;
 
 public class JournalEntrysRepository
@@ -22,11 +26,35 @@ public class JournalEntrysRepository
     return journalEntry;
   }
 
+
+  internal JournalEntry GetJournalEntryById(int journalEntryId)
+  {
+    string sql = "SELECT * FROM journalentrys WHERE id = @journalEntryId;";
+
+    JournalEntry journalEntry = _db.Query<JournalEntry>(sql, new { journalEntryId }).FirstOrDefault();
+    return journalEntry;
+  }
+
   internal JournalEntry GetJournalEntryByJournalId(int journalId)
   {
     string sql = @"SELECT * FROM journalentrys WHERE journalId = @journalId;";
 
     JournalEntry journalEntry = _db.Query<JournalEntry>(sql, new { journalId }).FirstOrDefault();
     return journalEntry;
+  }
+
+
+  internal void EditJournalEntry(JournalEntry journalEntryData)
+  {
+    string sql = @"UPDATE journalentrys SET description = @Description WHERE id = @Id;";
+
+    _db.Execute(sql, journalEntryData);
+  }
+
+  internal void RemoveJournalEntry(int journalEntryId)
+  {
+    string sql = "DELETE FROM journalentrys WHERE id = @journalEntryId LIMIT 1;";
+
+    _db.Execute(sql, new { journalEntryId });
   }
 }

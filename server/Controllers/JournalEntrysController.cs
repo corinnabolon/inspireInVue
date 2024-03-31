@@ -33,20 +33,43 @@ public class JournalEntrysController : ControllerBase
     }
   }
 
-  // [HttpGet]
+  [Authorize]
+  [HttpPut("{journalEntryId}")]
 
-  // public ActionResult<JournalEntry> GetJournalEntry()
-  // {
-  //   try
-  //   {
-  //     JournalEntry journalEntry = _journalEntrysService.GetJournalEntry();
-  //     return Ok(journalEntry);
-  //   }
-  //   catch (Exception exception)
-  //   {
-  //     return BadRequest(exception.Message);
-  //   }
-  // }
+  public async Task<ActionResult<JournalEntry>> EditJournalEntry(int journalEntryId, [FromBody] JournalEntry journalEntryData)
+  {
+    try
+    {
+      Account userInfo = await _auth0Provider.GetUserInfoAsync<Account>(HttpContext);
+      string userId = userInfo.Id;
+      JournalEntry journalEntry = _journalEntrysService.EditJournalEntry(journalEntryId, journalEntryData, userId);
+      return Ok(journalEntry);
+    }
+    catch (Exception exception)
+    {
+      return BadRequest(exception.Message);
+    }
+  }
+
+  [Authorize]
+  [HttpDelete("{journalEntryId}")]
+
+  public async Task<ActionResult<string>> RemoveJournalEntry(int journalEntryId)
+  {
+    try
+    {
+      Account userInfo = await _auth0Provider.GetUserInfoAsync<Account>(HttpContext);
+      string userId = userInfo.Id;
+      string message = _journalEntrysService.RemoveJournalEntry(journalEntryId, userId);
+      return Ok(message);
+    }
+    catch (Exception exception)
+    {
+      return BadRequest(exception.Message);
+    }
+  }
+
+
 
   //TODO: add get and delete methods
 

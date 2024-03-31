@@ -9,6 +9,10 @@ export const AppState = reactive({
   todoList: null,
   /** @type {import('./models/TodoListItem.js').TodoListItem[]} */
   todoListItems: [],
+  /** @type {import('./models/Journal.js').Journal | null} */
+  journal: null,
+  /** @type {import('./models/JournalEntry.js').JournalEntry[]} */
+  journalEntries: [],
   /** @type {import('./models/Quote.js').Quote | null} */
   quote: null,
   /** @type {import('./models/Weather.js').Weather | null} */
