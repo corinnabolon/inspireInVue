@@ -12,7 +12,7 @@ export const AppState = reactive({
   /** @type {import('./models/Journal.js').Journal | null} */
   journal: null,
   /** @type {import('./models/JournalEntry.js').JournalEntry[]} */
-  journalEntries: [],
+  journalEntrys: [],
   /** @type {import('./models/Quote.js').Quote | null} */
   quote: null,
   /** @type {import('./models/Weather.js').Weather | null} */

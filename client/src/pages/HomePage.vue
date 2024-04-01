@@ -22,6 +22,7 @@ import { imagesService } from "../services/ImagesService.js"
 import Cover from "../components/Cover.vue";
 import { logger } from "../utils/Logger.js"
 import { clocksService } from "../services/ClocksService.js"
+import { journalsService } from "../services/JournalsService.js"
 
 export default {
   setup() {
@@ -38,6 +39,7 @@ export default {
     watch(accountId, () => {
       getImage();
       getMyList();
+      getMyJournal();
       getWeather();
     })
 
@@ -48,6 +50,14 @@ export default {
     async function getMyList() {
       try {
         await todoListsService.getMyList()
+      } catch (error) {
+        Pop.error(error)
+      }
+    }
+
+    async function getMyJournal() {
+      try {
+        await journalsService.getMyJournal()
       } catch (error) {
         Pop.error(error)
       }
