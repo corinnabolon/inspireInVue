@@ -17,7 +17,7 @@ public class JournalEntrysRepository
 
   internal JournalEntry CreateJournalEntry(JournalEntry journalEntryData)
   {
-    string sql = @"INSERT INTO journals (description, creatorId, journalId) VALUES (@Description, @CreatorId, @TodoListId);
+    string sql = @"INSERT INTO journalentrys (description, creatorId, journalId) VALUES (@Description, @CreatorId, @JournalId);
       
       SELECT * FROM journalentrys WHERE id = LAST_INSERT_ID();";
 

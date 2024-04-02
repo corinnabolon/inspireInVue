@@ -55,7 +55,7 @@ export default {
           journalData.description = editable.value
           await journalEntrysService.submitJournal(journalData)
           editable.value = ""
-          Pop.confirm("Journal entry submitted")
+          Pop.success("Journal entry submitted")
         } catch (error) {
           Pop.error(error)
         }

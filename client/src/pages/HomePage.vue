@@ -57,9 +57,7 @@ export default {
 
     async function getMyJournal() {
       try {
-        logger.log("getMyJournal triggered!")
         await journalsService.getMyJournal()
-        logger.log("getMyJournal OK!")
       } catch (error) {
         Pop.error(error)
       }
