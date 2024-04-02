@@ -7,13 +7,16 @@ public class AccountController : ControllerBase
   private readonly AccountService _accountService;
 
   private readonly TodoListsService _todoListsService;
+
+  private readonly JournalsService _journalsService;
   private readonly Auth0Provider _auth0Provider;
 
-  public AccountController(AccountService accountService, Auth0Provider auth0Provider, TodoListsService todoListsService)
+  public AccountController(AccountService accountService, Auth0Provider auth0Provider, TodoListsService todoListsService, JournalsService journalsService)
   {
     _accountService = accountService;
     _auth0Provider = auth0Provider;
     _todoListsService = todoListsService;
+    _journalsService = journalsService;
   }
 
   [HttpGet]
@@ -42,6 +45,24 @@ public class AccountController : ControllerBase
       string userId = userInfo.Id;
       TodoList todoList = _todoListsService.GetMyTodoList(userId);
       return todoList;
+    }
+    catch (Exception exception)
+    {
+      return BadRequest(exception.Message);
+    }
+  }
+
+  [Authorize]
+  [HttpGet("journals")]
+
+  public async Task<ActionResult<Journal>> GetMyJournal()
+  {
+    try
+    {
+      Account userInfo = await _auth0Provider.GetUserInfoAsync<Account>(HttpContext);
+      string userId = userInfo.Id;
+      Journal journal = _journalsService.GetMyJournal(userId);
+      return journal;
     }
     catch (Exception exception)
     {

@@ -20,5 +20,6 @@ export const AppState = reactive({
   /** @type {import('./models/Image.js').Image | null} */
   image: null,
   /** @type {Date | null} */
-  now: null
+  now: null,
+  date: new Date,
 })

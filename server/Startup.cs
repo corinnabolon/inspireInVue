@@ -40,6 +40,12 @@ public class Startup
     services.AddScoped<TodoListItemsRepository>();
     services.AddScoped<TodoListItemsService>();
 
+    services.AddScoped<JournalsRepository>();
+    services.AddScoped<JournalsService>();
+
+    services.AddScoped<JournalEntrysRepository>();
+    services.AddScoped<JournalEntrysService>();
+
     services.AddScoped<WeatherService>();
   }
 

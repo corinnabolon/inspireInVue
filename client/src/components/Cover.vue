@@ -25,9 +25,14 @@
             <p v-else class="mt-2 mx-1 mb-1 py-2">Weather not available</p>
           </div>
         </div>
-        <div v-if="account.id" class="text-bg fredoka-font m-1 rounded text-center">
+        <div v-if="account.id" class="fredoka-font m-1 rounded text-center text-bg">
           <p class="mb-0 fs-1" title="To-do List" role="button" data-bs-toggle="modal" data-bs-target="#todoListModal">
             <i class="mdi mdi-notebook"></i>
+          </p>
+        </div>
+        <div v-if="account.id" class="fredoka-font m-1 rounded text-center text-bg mt-1">
+          <p class="mb-0 fs-1" title="Journal" role="button" data-bs-toggle="modal" data-bs-target="#journalModal">
+            <i class="mdi mdi-notebook-multiple"></i>
           </p>
         </div>
       </div>
@@ -156,6 +161,16 @@
       <TodoListComponent />
     </template>
   </ModalComponent>
+
+  <ModalComponent :modalId="'journalModal'">
+    <template #modalTitle>
+      <p class="fredoka-font fs-3">Journal for {{date}}</p>
+    </template>
+
+    <template #modalBody>
+      <JournalComponent />
+    </template>
+  </ModalComponent>
 </template>
 
 
@@ -165,6 +180,7 @@ import { computed, reactive, onMounted, watch, ref } from 'vue';
 import { Image } from "../models/Image.js";
 import TodoListComponent from "./TodoListComponent.vue";
 import ModalComponent from "./ModalComponent.vue";
+import JournalComponent from "./JournalComponent.vue";
 import Login from "./Login.vue";
 import Pop from "../utils/Pop.js";
 import { accountService } from "../services/AccountService.js";
@@ -232,6 +248,8 @@ export default {
       user: computed(() => AppState.user),
       todoList: computed(() => AppState.todoList),
       todoListItems: computed(() => AppState.todoListItems),
+      journal: computed(() => AppState.journal),
+      journalEntrys: computed(() => AppState.journalEntrys),
       quote: computed(() => AppState.quote),
       image: computed(() => AppState.image),
       currentWeather: computed(() => AppState.currentWeather),
@@ -265,6 +283,7 @@ export default {
           return "Good evening"
         }
       }),
+      date: computed(() => AppState.date.toLocaleDateString()),
 
 
       toggleWantsMainPage() {
@@ -316,7 +335,7 @@ export default {
 
     }
   },
-  components: { ModalComponent, TodoListComponent, Login }
+  components: { ModalComponent, TodoListComponent, Login, JournalComponent }
 };
 </script>
 

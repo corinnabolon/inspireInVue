@@ -8,7 +8,16 @@ class JournalEntrysService {
   async getMyJournalEntrys(journalId) {
     const res = await api.get(`api/journals/${journalId}/journalentrys`)
     logger.log("Journal entrys", res.data)
-    AppState.journalEntrys = res.data.map(pojo => new JournalEntry(pojo))
+    if (res.data) {
+      AppState.journalEntrys = res.data.map(pojo => new JournalEntry(pojo))
+    }
+  }
+
+  async submitJournal(journalData) {
+    const res = await api.post(`api/journalentrys`, journalData)
+    logger.log("Created journal entry", res.data)
+    AppState.journalEntrys.push(new JournalEntry(res.data))
+    logger.log("Journal entrys", AppState.journalEntrys)
   }
 
 }

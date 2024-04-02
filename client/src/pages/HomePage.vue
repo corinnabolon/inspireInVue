@@ -34,12 +34,12 @@ export default {
       calcClock();
       setTimeout(getImage, 8000);
       setTimeout(getWeather, 8000);
+      setTimeout(getMyList, 8000);
+      setTimeout(getMyJournal, 8000);
     })
 
     watch(accountId, () => {
       getImage();
-      getMyList();
-      getMyJournal();
       getWeather();
     })
 
@@ -57,7 +57,9 @@ export default {
 
     async function getMyJournal() {
       try {
+        logger.log("getMyJournal triggered!")
         await journalsService.getMyJournal()
+        logger.log("getMyJournal OK!")
       } catch (error) {
         Pop.error(error)
       }
@@ -126,6 +128,8 @@ export default {
       quote: computed(() => AppState.quote),
       image: computed(() => AppState.image),
       currentWeather: computed(() => AppState.currentWeather),
+      journal: computed(() => AppState.journal),
+      journalEntrys: computed(() => AppState.journalEntrys),
 
 
     }

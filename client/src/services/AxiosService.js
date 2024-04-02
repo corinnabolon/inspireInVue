@@ -3,7 +3,7 @@ import { baseURL } from '../env'
 import { logger } from '../utils/Logger.js'
 export const api = Axios.create({
   baseURL,
-  timeout: 8000
+  timeout: 10000
 })
 
 export const sandboxApi = Axios.create({

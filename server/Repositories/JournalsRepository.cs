@@ -13,7 +13,7 @@ public class JournalsRepository
 
   internal Journal CreateJournal(Journal journalData)
   {
-    string sql = @"INSERT INTO journals (accountId) VALUES (@AccountId)
+    string sql = @"INSERT INTO journals (accountId) VALUES (@AccountId);
   
   SELECT * FROM journals WHERE id = LAST_INSERT_ID();";
 
@@ -39,4 +39,5 @@ public class JournalsRepository
 
     return journal;
   }
+
 }
