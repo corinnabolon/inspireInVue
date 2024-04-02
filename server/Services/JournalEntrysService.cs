@@ -23,12 +23,13 @@ public class JournalEntrysService
     {
       throw new Exception("Not your journal to write in");
     }
-    JournalEntry testJournalEntry = GetJournalEntryByJournalId(journal.Id, userId);
-    if (testJournalEntry != null)
+    List<JournalEntry> testJournalEntries = GetJournalEntrysByJournalId(journal.Id, userId);
+    if (testJournalEntries.Any(entry => entry.CreatedAt.Date == DateTime.Today))
     {
       throw new Exception("You already have a journal entry for today.");
     }
     journalEntryData.JournalId = journal.Id;
+    journalEntryData.CreatedAt = DateTime.Today;
     JournalEntry journalEntry = _repository.CreateJournalEntry(journalEntryData);
     return journalEntry;
   }
@@ -43,15 +44,15 @@ public class JournalEntrysService
     return journalEntry;
   }
 
-  internal JournalEntry GetJournalEntryByJournalId(int journalId, string userId)
+  internal List<JournalEntry> GetJournalEntrysByJournalId(int journalId, string userId)
   {
     Journal journal = _journalsService.GetMyJournal(userId);
     if (journalId != journal.Id)
     {
       throw new Exception("Not your journal entry to get");
     }
-    JournalEntry journalEntry = _repository.GetJournalEntryByJournalId(journalId);
-    return journalEntry;
+    List<JournalEntry> journalEntrys = _repository.GetJournalEntrysByJournalId(journalId);
+    return journalEntrys;
   }
 
 

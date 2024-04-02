@@ -164,11 +164,23 @@
 
   <ModalComponent :modalId="'journalModal'">
     <template #modalTitle>
-      <p class="fredoka-font fs-3">Journal for {{date}}</p>
+      <p class="fredoka-font fs-3 mb-0">Journal for {{date}}</p>
+      <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#oldJournalsModal">Past
+        Entries</button>
     </template>
 
     <template #modalBody>
       <JournalComponent />
+    </template>
+  </ModalComponent>
+
+  <ModalComponent :modalId="'oldJournalsModal'">
+    <template #modalTitle>
+      <p class="fredoka-font fs-3">Journal for {{date}}</p>
+    </template>
+
+    <template #modalBody>
+      <OldJournalsComponent />
     </template>
   </ModalComponent>
 </template>
@@ -179,6 +191,7 @@ import { AppState } from '../AppState';
 import { computed, reactive, onMounted, watch, ref } from 'vue';
 import { Image } from "../models/Image.js";
 import TodoListComponent from "./TodoListComponent.vue";
+import OldJournalsComponent from "./OldJournalsComponent.vue";
 import ModalComponent from "./ModalComponent.vue";
 import JournalComponent from "./JournalComponent.vue";
 import Login from "./Login.vue";
@@ -284,6 +297,7 @@ export default {
         }
       }),
       date: computed(() => AppState.date.toLocaleDateString()),
+      todaysJournalEntry: computed(() => AppState.journalEntrys.find((journalEntry) => journalEntry.createdAt == AppState.date)),
 
 
       toggleWantsMainPage() {
@@ -335,7 +349,7 @@ export default {
 
     }
   },
-  components: { ModalComponent, TodoListComponent, Login, JournalComponent }
+  components: { ModalComponent, TodoListComponent, Login, JournalComponent, OldJournalsComponent }
 };
 </script>
 

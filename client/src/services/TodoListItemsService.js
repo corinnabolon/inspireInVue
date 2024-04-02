@@ -9,9 +9,7 @@ class TodoListItemsService {
   async getMyListItems(todoListId) {
     const res = await api.get(`api/todolists/${todoListId}/todolistitems`)
     logger.log("Todo list items", res.data)
-    if (res.data) {
-      AppState.todoListItems = res.data.map(pojo => new TodoListItem(pojo))
-    }
+    AppState.todoListItems = res.data.map(pojo => new TodoListItem(pojo))
   }
 
   async createListItem(todoListData) {

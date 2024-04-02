@@ -8,9 +8,7 @@ class JournalEntrysService {
   async getMyJournalEntrys(journalId) {
     const res = await api.get(`api/journals/${journalId}/journalentrys`)
     logger.log("Journal entrys", res.data)
-    if (res.data) {
-      AppState.journalEntrys = res.data.map(pojo => new JournalEntry(pojo))
-    }
+    AppState.journalEntrys = res.data.map((pojo) => new JournalEntry(pojo))
   }
 
   async submitJournal(journalData) {

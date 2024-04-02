@@ -58,14 +58,14 @@ public class JournalsController : ControllerBase
   [Authorize]
   [HttpGet("{journalId}/journalEntrys")]
 
-  public async Task<ActionResult<JournalEntry>> GetJournalEntryByJournalId(int journalId)
+  public async Task<ActionResult<List<JournalEntry>>> GetJournalEntrysByJournalId(int journalId)
   {
     try
     {
       Account userInfo = await _auth0Provider.GetUserInfoAsync<Account>(HttpContext);
       string userId = userInfo.Id;
-      JournalEntry journalEntry = _journalentrysService.GetJournalEntryByJournalId(journalId, userId);
-      return Ok(journalEntry);
+      List<JournalEntry> journalEntrys = _journalentrysService.GetJournalEntrysByJournalId(journalId, userId);
+      return Ok(journalEntrys);
     }
     catch (Exception exception)
     {

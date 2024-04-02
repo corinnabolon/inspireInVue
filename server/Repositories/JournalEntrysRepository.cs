@@ -35,12 +35,12 @@ public class JournalEntrysRepository
     return journalEntry;
   }
 
-  internal JournalEntry GetJournalEntryByJournalId(int journalId)
+  internal List<JournalEntry> GetJournalEntrysByJournalId(int journalId)
   {
     string sql = @"SELECT * FROM journalentrys WHERE journalId = @journalId;";
 
-    JournalEntry journalEntry = _db.Query<JournalEntry>(sql, new { journalId }).FirstOrDefault();
-    return journalEntry;
+    List<JournalEntry> journalEntrys = _db.Query<JournalEntry>(sql, new { journalId }).ToList();
+    return journalEntrys;
   }
 
 
