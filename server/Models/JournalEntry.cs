@@ -9,6 +9,8 @@ public class JournalEntry
   public bool? Completed { get; set; }
   public string Description { get; set; }
 
+  public DateTime EntryDate { get; set; }
+
   public string CreatorId { get; set; }
 
   public int JournalId { get; set; }

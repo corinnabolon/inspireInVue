@@ -5,6 +5,7 @@ export class JournalEntry {
     this.updatedAt = data.updatedAt
     this.completed = data.completec
     this.description = data.description
+    this.entryDate = data.entryDate
     this.creatorId = data.creatorId
     this.journalId = data.journalId
   }

@@ -23,6 +23,11 @@ public class JournalEntrysService
     {
       throw new Exception("Not your journal to write in");
     }
+    JournalEntry testJournalEntry = GetJournalEntryByJournalId(journal.Id, userId);
+    if (testJournalEntry != null)
+    {
+      throw new Exception("You already have a journal entry for today.");
+    }
     journalEntryData.JournalId = journal.Id;
     JournalEntry journalEntry = _repository.CreateJournalEntry(journalEntryData);
     return journalEntry;
