@@ -1,6 +1,9 @@
 <template>
   <div class="container-fluid fredoka-font">
-    <section class="row">
+    <section v-if="!hasWrittenEntry" class="row">
+      <div class="col-12">
+        <button @click="displayPropsINeedToKnow">Display</button>
+      </div>
       <div class="col-1">
         <p @click="toggleWantsToAdd" class="fs-1" :title="wantsToAdd ? `Don't write` : 'Write Journal'" role="button"><i
             class="mdi" :class="wantsToAdd ? 'mdi-minus' : 'mdi-plus'"></i></p>
@@ -32,6 +35,7 @@
 import { AppState } from '../AppState';
 import { computed, reactive, onMounted, ref } from 'vue';
 import { journalsService } from "../services/JournalsService.js";
+import { logger } from "../utils/Logger.js"
 import { journalEntrysService } from "../services/JournalEntrysService.js";
 import Pop from "../utils/Pop.js";
 
@@ -44,6 +48,20 @@ export default {
       wantsToAdd,
       editable,
       date: computed(() => AppState.date.toLocaleDateString()),
+      hasWrittenEntry: computed(() => AppState.journalEntrys.forEach((journalEntry) => {
+        let UTCString = journalEntrysService.makeNowDate()
+        if (journalEntry.createdAt.toDateString() == UTCString) {
+          return true
+        }
+      })),
+      //TODO: the above is not working as a computed property--make it a function which runs to compare the two when this modal is opened.  In addition we'll have to close the modal when an entry is submitted
+
+      displayPropsINeedToKnow() {
+        let UTCString = journalEntrysService.makeNowDate()
+        let JournalEntryCreatedAt = AppState.journalEntrys[20].createdAt.toDateString()
+        logger.log("UTCString", UTCString)
+        logger.log("JournalEntryCreatedAt", JournalEntryCreatedAt)
+      },
 
       toggleWantsToAdd() {
         wantsToAdd.value = !wantsToAdd.value;

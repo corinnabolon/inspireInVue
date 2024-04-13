@@ -1,7 +1,7 @@
 export class JournalEntry {
   constructor(data) {
     this.id = data.id
-    this.createdAt = new Date(data.createdAt).toDateString()
+    this.createdAt = new Date(data.createdAt)
     this.updatedAt = new Date(data.updatedAt)
     this.completed = data.completed
     this.description = data.description

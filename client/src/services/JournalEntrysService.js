@@ -11,8 +11,7 @@ class JournalEntrysService {
     AppState.journalEntrys = res.data.map((pojo) => new JournalEntry(pojo))
   }
 
-  async submitJournal(journalData) {
-    let cancel = false
+  makeNowDate() {
     let newDate = new Date().toUTCString()
     let newDateString = newDate.substring(0, 16)
     let dayOfWeek = newDateString.substring(0, 3)
@@ -20,8 +19,21 @@ class JournalEntrysService {
     let month = newDateString.substring(8, 11)
     let year = newDateString.substring(12, 16)
     let rearrangedDateString = dayOfWeek + " " + month + " " + dateNum + " " + year
+    return rearrangedDateString
+  }
+
+  async submitJournal(journalData) {
+    let cancel = false
+    // let newDate = new Date().toUTCString()
+    // let newDateString = newDate.substring(0, 16)
+    // let dayOfWeek = newDateString.substring(0, 3)
+    // let dateNum = newDateString.substring(5, 7)
+    // let month = newDateString.substring(8, 11)
+    // let year = newDateString.substring(12, 16)
+    // let rearrangedDateString = dayOfWeek + " " + month + " " + dateNum + " " + year
+    let rearrangedDateString = this.makeNowDate()
     AppState.journalEntrys.forEach((journalEntry) => {
-      if (journalEntry.createdAt == rearrangedDateString) {
+      if (journalEntry.createdAt.toDateString() == rearrangedDateString) {
         logger.log("Same date")
         cancel = true
         return
