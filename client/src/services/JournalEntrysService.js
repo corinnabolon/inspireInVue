@@ -7,7 +7,7 @@ class JournalEntrysService {
 
   async getMyJournalEntrys(journalId) {
     const res = await api.get(`api/journals/${journalId}/journalentrys`)
-    logger.log("Journal entrys", res.data)
+    // logger.log("Journal entrys", res.data)
     AppState.journalEntrys = res.data.map((pojo) => new JournalEntry(pojo))
   }
 
@@ -32,6 +32,7 @@ class JournalEntrysService {
     // let year = newDateString.substring(12, 16)
     // let rearrangedDateString = dayOfWeek + " " + month + " " + dateNum + " " + year
     let rearrangedDateString = this.makeNowDate()
+    await this.getMyJournalEntrys(AppState.journal.id)
     AppState.journalEntrys.forEach((journalEntry) => {
       if (journalEntry.createdAt.toDateString() == rearrangedDateString) {
         logger.log("Same date")
