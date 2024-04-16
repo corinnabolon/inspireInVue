@@ -22,4 +22,7 @@ export const AppState = reactive({
   /** @type {Date | null} */
   now: null,
   date: new Date,
+  alreadyWritten: false,
+  /** @type {import('./models/JournalEntry.js').JournalEntry | null} */
+  todaysEntry: null
 })

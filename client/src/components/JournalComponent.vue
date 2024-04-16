@@ -1,6 +1,6 @@
 <template>
   <div class="container-fluid fredoka-font">
-    <section v-if="!hasWrittenEntry" class="row">
+    <section v-if="!alreadyWritten" class="row">
       <div class="col-12">
         <button @click="displayPropsINeedToKnow">Display</button>
       </div>
@@ -21,6 +21,21 @@
         </form>
       </div>
     </section>
+    <section v-else class="row justify-content-end">
+      <div class="col-12 mt-4 pe-5 pb-2">
+        <div v-if="!editingEntry">
+          <p class="fredoka-font fs-5 border rounded p-3">{{ todaysEntry.description }}</p>
+        </div>
+        <div v-else>
+          <textarea v-model="todaysEditableEntry" minlength="1" maxlength="1000"></textarea>
+        </div>
+      </div>
+      <div class="col-3 me-5 mb-3">
+        <button v-if="!editingEntry" @click="toggleEditingEntry" class="btn btn-success">Edit Entry</button>
+        <button v-else @click="toggleEditingEntry" class="btn btn-success">Submit Changes</button>
+      </div>
+      <!-- TODO: make edit function and change this to trigger that, and it closes the window as well -->
+    </section>
     <!-- <section class="row ms-1 mb-2">
       <div v-for="todoListItem in todoListItems" class="d-flex">
         <TodoListItemComponent :itemProp="todoListItem" />
@@ -38,23 +53,45 @@ import { journalsService } from "../services/JournalsService.js";
 import { logger } from "../utils/Logger.js"
 import { journalEntrysService } from "../services/JournalEntrysService.js";
 import Pop from "../utils/Pop.js";
+import { Modal } from "bootstrap";
 
 export default {
   setup() {
     let wantsToAdd = ref(false);
     let editable = ref("");
+    let editingEntry = ref(false);
+    let todaysEditableEntry = ref("")
+
+    onMounted(() => {
+      let journalModalElem = document.getElementById('journalModal')
+      journalModalElem.addEventListener("show.bs.modal", function (event) {
+        checkIfJournalAlreadyWritten()
+      })
+      //TODO: Also do something when closed? See AllSpice EditProfileComponent
+    })
+
+    function checkIfJournalAlreadyWritten() {
+      logger.log("checkIfJournalWritten triggered")
+      let UTCString = journalEntrysService.makeNowDate()
+      AppState.journalEntrys.forEach((journalEntry) => {
+        if (journalEntry.createdAt.toDateString() == UTCString) {
+          AppState.alreadyWritten = true;
+          logger.log("todaysEditableEntry.value", todaysEditableEntry.value)
+          AppState.todaysEntry = journalEntry
+          todaysEditableEntry.value = AppState.todaysEntry.description
+          logger.log("todaysEditableEntry.value", todaysEditableEntry.value)
+        }
+      })
+    }
 
     return {
       wantsToAdd,
       editable,
+      todaysEditableEntry,
+      editingEntry,
       date: computed(() => AppState.date.toLocaleDateString()),
-      hasWrittenEntry: computed(() => AppState.journalEntrys.forEach((journalEntry) => {
-        let UTCString = journalEntrysService.makeNowDate()
-        if (journalEntry.createdAt.toDateString() == UTCString) {
-          return true
-        }
-      })),
-      //TODO: the above is not working as a computed property--make it a function which runs to compare the two when this modal is opened.  In addition we'll have to close the modal when an entry is submitted
+      alreadyWritten: computed(() => AppState.alreadyWritten),
+      todaysEntry: computed(() => AppState.todaysEntry),
 
       displayPropsINeedToKnow() {
         let UTCString = journalEntrysService.makeNowDate()
@@ -67,6 +104,10 @@ export default {
         wantsToAdd.value = !wantsToAdd.value;
       },
 
+      toggleEditingEntry() {
+        editingEntry.value = !editingEntry.value;
+      },
+
       async submitJournal() {
         try {
           const journalData = {}
@@ -74,6 +115,7 @@ export default {
           await journalEntrysService.submitJournal(journalData)
           editable.value = ""
           Pop.success("Journal entry submitted")
+          Modal.getOrCreateInstance("#journalModal").hide()
         } catch (error) {
           Pop.error(error)
         }
@@ -86,7 +128,7 @@ export default {
 
 <style lang="scss" scoped>
 textarea {
-  width: 20rem;
+  width: 27rem;
   height: 50dvh;
 }
 
