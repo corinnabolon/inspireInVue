@@ -8,6 +8,18 @@
           <p class="mb-1 mx-1 mb-2 pb-2">{{ coverProp.author }}</p>
         </div>
       </div>
+      <div class="col-2 d-flex justify-content-center">
+        <div v-if="account.id" class="fredoka-font rounded text-center text-bg m-1 p-1 link-button-height">
+          <p class="fs-1" title="To-do List" role="button" data-bs-toggle="modal" data-bs-target="#todoListModal">
+            <i class="mdi mdi-notebook"></i>
+          </p>
+        </div>
+        <div v-if="account.id" class="fredoka-font rounded text-center text-bg m-1 p-1 link-button-height">
+          <p class="fs-1" title="Journal" role="button" data-bs-toggle="modal" data-bs-target="#journalModal">
+            <i class="mdi mdi-notebook-multiple"></i>
+          </p>
+        </div>
+      </div>
       <div class="col-1">
         <div class="text-bg fredoka-font mx-1 rounded text-center">
           <div v-if="currentWeather">
@@ -16,7 +28,7 @@
               <img v-if="weatherIcon != ''" :src="weatherIcon" title="Powered by Tomorrow.io" class="weather-icon" />
             </div>
             <p v-if="!wantsCelsius" @click="toggleWantsCorF" role="button" class="mt-2 mx-1 mb-1 py-2">{{
-    tempInF }}°F</p>
+              tempInF }}°F</p>
             <p v-else @click="toggleWantsCorF" role="button" class="mt-2 mx-1 mb-1 py-2">{{ tempInC }}°C</p>
           </div>
           <div v-else>
@@ -24,16 +36,6 @@
               location</p>
             <p v-else class="mt-2 mx-1 mb-1 py-2">Weather not available</p>
           </div>
-        </div>
-        <div v-if="account.id" class="fredoka-font m-1 rounded text-center text-bg">
-          <p class="mb-0 fs-1" title="To-do List" role="button" data-bs-toggle="modal" data-bs-target="#todoListModal">
-            <i class="mdi mdi-notebook"></i>
-          </p>
-        </div>
-        <div v-if="account.id" class="fredoka-font m-1 rounded text-center text-bg mt-1">
-          <p class="mb-0 fs-1" title="Journal" role="button" data-bs-toggle="modal" data-bs-target="#journalModal">
-            <i class="mdi mdi-notebook-multiple"></i>
-          </p>
         </div>
       </div>
     </section>
@@ -74,8 +76,8 @@
               <p class="form-label fs-5 mb-0">Weather Location:</p>
               <p class="form-label fs-5">(currently
                 <span v-if="account.preferredLocation" class="fst-italic">{{
-    account.preferredLocation
-  }}</span>
+                  account.preferredLocation
+                  }}</span>
                 <span v-else>not specified</span>
                 )
               </p>
@@ -91,8 +93,8 @@
             <form id="imageKeywordForm" @submit.prevent="addImageQuery">
               <p class="form-label fs-5 mb-0">Image keyword:</p>
               <p class="form-label fs-5">(currently <span class="fst-italic">{{
-    preferredImageTypes
-  }}</span>
+                preferredImageTypes
+                  }}</span>
                 )</p>
             </form>
           </div>
@@ -164,7 +166,7 @@
 
   <ModalComponent :modalId="'journalModal'">
     <template #modalTitle>
-      <p class="fredoka-font fs-3 mb-0">Journal for {{date}}</p>
+      <p class="fredoka-font fs-3 mb-0">Journal for {{ date }}</p>
       <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#oldJournalsModal">Past
         Entries</button>
     </template>
@@ -176,7 +178,7 @@
 
   <ModalComponent :modalId="'oldJournalsModal'">
     <template #modalTitle>
-      <p class="fredoka-font fs-3">Journal for {{date}}</p>
+      <p class="fredoka-font fs-3">Journal for {{ date }}</p>
     </template>
 
     <template #modalBody>
@@ -362,6 +364,10 @@ export default {
   left: 45%;
   bottom: 81%;
   z-index: 1;
+}
+
+.link-button-height {
+  height: 12dvh;
 }
 
 .weather-icon {

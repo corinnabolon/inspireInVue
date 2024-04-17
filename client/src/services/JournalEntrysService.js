@@ -22,7 +22,7 @@ class JournalEntrysService {
     return rearrangedDateString
   }
 
-  async submitJournal(journalData) {
+  async submitJournal(journalEntryData) {
     let cancel = false
     // let newDate = new Date().toUTCString()
     // let newDateString = newDate.substring(0, 16)
@@ -41,11 +41,19 @@ class JournalEntrysService {
       }
     })
     if (!cancel) {
-      const res = await api.post(`api/journalentrys`, journalData)
+      const res = await api.post(`api/journalentrys`, journalEntryData)
       logger.log("Created journal entry", res.data)
       AppState.journalEntrys.push(new JournalEntry(res.data))
       logger.log("Journal entrys", AppState.journalEntrys)
     }
+  }
+
+  async editJournal(journalEntryData) {
+    logger.log("Edit journal in Service", journalEntryData)
+    const res = await api.put(`api/journalentrys/${journalEntryData.id}`, journalEntryData)
+    const editedJournalEntryIndex = AppState.journalEntrys.findIndex((journalEntry) => journalEntry.id == journalEntryData.id)
+    const editedJournalEntryData = new JournalEntry(res.data)
+    AppState.journalEntrys.splice(editedJournalEntryIndex, 1, editedJournalEntryData)
   }
 
 }

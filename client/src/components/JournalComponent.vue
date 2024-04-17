@@ -1,9 +1,6 @@
 <template>
   <div class="container-fluid fredoka-font">
     <section v-if="!alreadyWritten" class="row">
-      <div class="col-12">
-        <button @click="displayPropsINeedToKnow">Display</button>
-      </div>
       <div class="col-1">
         <p @click="toggleWantsToAdd" class="fs-1" :title="wantsToAdd ? `Don't write` : 'Write Journal'" role="button"><i
             class="mdi" :class="wantsToAdd ? 'mdi-minus' : 'mdi-plus'"></i></p>
@@ -32,7 +29,7 @@
       </div>
       <div class="col-3 me-5 mb-3">
         <button v-if="!editingEntry" @click="toggleEditingEntry" class="btn btn-success">Edit Entry</button>
-        <button v-else @click="toggleEditingEntry" class="btn btn-success">Submit Changes</button>
+        <button v-else @click="editJournalEntry" class="btn btn-success">Submit Changes</button>
       </div>
       <!-- TODO: make edit function and change this to trigger that, and it closes the window as well -->
     </section>
@@ -67,12 +64,23 @@ export default {
       journalModalElem.addEventListener("show.bs.modal", function (event) {
         checkIfJournalAlreadyWritten()
       })
+      journalModalElem.addEventListener("hide.bs.modal", function (event) {
+        // journalEntrysService.getMyJournalEntrys()
+        checkIfJournalAlreadyWritten()
+      })
       //TODO: Also do something when closed? See AllSpice EditProfileComponent
     })
 
-    function checkIfJournalAlreadyWritten() {
+    async function checkIfJournalAlreadyWritten() {
       logger.log("checkIfJournalWritten triggered")
       let UTCString = journalEntrysService.makeNowDate()
+      if (AppState.journal) {
+        try {
+          await journalEntrysService.getMyJournalEntrys(AppState.journal.id)
+        } catch (error) {
+          Pop.error(error)
+        }
+      }
       AppState.journalEntrys.forEach((journalEntry) => {
         if (journalEntry.createdAt.toDateString() == UTCString) {
           AppState.alreadyWritten = true;
@@ -93,12 +101,12 @@ export default {
       alreadyWritten: computed(() => AppState.alreadyWritten),
       todaysEntry: computed(() => AppState.todaysEntry),
 
-      displayPropsINeedToKnow() {
-        let UTCString = journalEntrysService.makeNowDate()
-        let JournalEntryCreatedAt = AppState.journalEntrys[20].createdAt.toDateString()
-        logger.log("UTCString", UTCString)
-        logger.log("JournalEntryCreatedAt", JournalEntryCreatedAt)
-      },
+      // displayPropsINeedToKnow() {
+      //   let UTCString = journalEntrysService.makeNowDate()
+      //   let JournalEntryCreatedAt = AppState.journalEntrys[20].createdAt.toDateString()
+      //   logger.log("UTCString", UTCString)
+      //   logger.log("JournalEntryCreatedAt", JournalEntryCreatedAt)
+      // },
 
       toggleWantsToAdd() {
         wantsToAdd.value = !wantsToAdd.value;
@@ -110,16 +118,32 @@ export default {
 
       async submitJournal() {
         try {
-          const journalData = {}
-          journalData.description = editable.value
-          await journalEntrysService.submitJournal(journalData)
+          const journalEntryData = {}
+          journalEntryData.description = editable.value
+          await journalEntrysService.submitJournal(journalEntryData)
           editable.value = ""
           Pop.success("Journal entry submitted")
           Modal.getOrCreateInstance("#journalModal").hide()
         } catch (error) {
           Pop.error(error)
         }
+      },
+
+      async editJournalEntry() {
+        try {
+          let UTCString = journalEntrysService.makeNowDate()
+          const journalData = AppState.journalEntrys.find((journalEntry) => journalEntry.createdAt.toDateString() == UTCString)
+          journalData.description = todaysEditableEntry.value
+          await journalEntrysService.editJournal(journalData)
+          todaysEditableEntry.value = ""
+          Pop.success("Journal edited!")
+          Modal.getOrCreateInstance("#journalModal").hide()
+          this.toggleEditingEntry()
+        } catch (error) {
+          Pop.error(error)
+        }
       }
+
     }
   }
 };
