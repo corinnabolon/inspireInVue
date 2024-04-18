@@ -77,7 +77,7 @@
               <p class="form-label fs-5">(currently
                 <span v-if="account.preferredLocation" class="fst-italic">{{
                   account.preferredLocation
-                  }}</span>
+                }}</span>
                 <span v-else>not specified</span>
                 )
               </p>
@@ -178,7 +178,8 @@
 
   <ModalComponent :modalId="'oldJournalsModal'">
     <template #modalTitle>
-      <p class="fredoka-font fs-3">Journal for {{ date }}</p>
+      <p class="fredoka-font fs-3 mb-0">Past Journals</p>
+      <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#journalModal">Today's Entry</button>
     </template>
 
     <template #modalBody>

@@ -31,7 +31,6 @@
         <button v-if="!editingEntry" @click="toggleEditingEntry" class="btn btn-success">Edit Entry</button>
         <button v-else @click="editJournalEntry" class="btn btn-success">Submit Changes</button>
       </div>
-      <!-- TODO: make edit function and change this to trigger that, and it closes the window as well -->
     </section>
     <!-- <section class="row ms-1 mb-2">
       <div v-for="todoListItem in todoListItems" class="d-flex">
@@ -65,10 +64,8 @@ export default {
         checkIfJournalAlreadyWritten()
       })
       journalModalElem.addEventListener("hide.bs.modal", function (event) {
-        // journalEntrysService.getMyJournalEntrys()
         checkIfJournalAlreadyWritten()
       })
-      //TODO: Also do something when closed? See AllSpice EditProfileComponent
     })
 
     async function checkIfJournalAlreadyWritten() {
