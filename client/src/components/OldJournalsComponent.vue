@@ -2,7 +2,7 @@
   <div class="component">
     <!-- <div v-if="wantsListOfEntries"> -->
     <p v-for="journalEntry in journalEntrys" :key="journalEntry.id" @click="showEntry(journalEntry)">
-      {{ journalEntry.createdAt.toDateString() }}
+      {{ journalEntry }}
     </p>
     <!-- </div> -->
     <!-- <div v-else> -->
@@ -23,6 +23,7 @@ export default {
 
   setup() {
 
+
     return {
       journalEntrys: computed(() => AppState.journalEntrys),
       //TODO: make today's entry not show up on list
@@ -32,6 +33,14 @@ export default {
         logger.log(entry)
         this.selectedEntry = entry;
       },
+
+      // convertToLocalTime(utcDateTime) {
+      //   const detectedTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone
+      //   let options = { timeZone: detectedTimezone };
+      //   const localDateTime = new Date(utcDateTime);
+      //   let convertedTime = localDateTime.toLocaleString("en-US", options)
+      //   return convertedTime
+      // },
       // closeModal() {
       //   this.selectedObject = null;
       // },
