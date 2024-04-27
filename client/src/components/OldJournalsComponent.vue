@@ -2,7 +2,7 @@
   <div class="component">
     <!-- <div v-if="wantsListOfEntries"> -->
     <p v-for="journalEntry in journalEntrys" :key="journalEntry.id" @click="showEntry(journalEntry)">
-      {{ journalEntry }}
+      {{ journalEntry.createdAtInLocalTime }}
     </p>
     <!-- </div> -->
     <!-- <div v-else> -->
