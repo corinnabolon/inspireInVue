@@ -19,15 +19,16 @@
       </div>
     </section>
     <section v-else class="row justify-content-end">
-      <div class="col-12 mt-4 pe-5 pb-2">
-        <div v-if="!editingEntry">
-          <p class="fredoka-font fs-5 border rounded p-3">{{ todaysEntry.description }}</p>
-        </div>
-        <div v-else>
-          <textarea v-model="todaysEditableEntry" minlength="1" maxlength="1000"></textarea>
-        </div>
+      <!-- <div class="col-12 mt-4 pe-5 pb-2"> -->
+      <div v-if="!editingEntry">
+        <!-- <p class="fredoka-font fs-5 border rounded p-3">{{ todaysEntry.description }}</p> -->
+        <JournalContentComponent :journalEntryProp="todaysEntry" />
       </div>
-      <div class="col-3 me-5 mb-3">
+      <div v-else>
+        <textarea v-model="todaysEditableEntry" minlength="1" maxlength="1000"></textarea>
+      </div>
+      <!-- </div> -->
+      <div class="col-3 mb-3">
         <button v-if="!editingEntry" @click="toggleEditingEntry" class="btn btn-success">Edit Entry</button>
         <button v-else @click="editJournalEntry" class="btn btn-success">Submit Changes</button>
       </div>
@@ -50,6 +51,7 @@ import { logger } from "../utils/Logger.js"
 import { journalEntrysService } from "../services/JournalEntrysService.js";
 import Pop from "../utils/Pop.js";
 import { Modal } from "bootstrap";
+import JournalContentComponent from "../components/JournalContentComponent.vue";
 
 export default {
   setup() {
@@ -142,7 +144,8 @@ export default {
       }
 
     }
-  }
+  },
+  components: { JournalContentComponent }
 };
 </script>
 

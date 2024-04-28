@@ -1,13 +1,22 @@
 <template>
-  <div class="component">
-    <!-- <div v-if="wantsListOfEntries"> -->
-    <p v-for="journalEntry in journalEntrys" :key="journalEntry.id" @click="showEntry(journalEntry)">
-      {{ journalEntry.createdAtInLocalTime }}
-    </p>
-    <!-- </div> -->
-    <!-- <div v-else> -->
-    <!-- <JournalContentComponent v-if="selectedEntry" :journalEntryProp="selectedEntry" /> -->
-    <!-- </div> -->
+  <div class="container-fluid fredoka-font">
+    <section class="row">
+      <div v-if="wantsListOfEntries" class="my-2">
+        <p class="fs-5 mb-0" v-for="journalEntry in journalEntrys" :key="journalEntry.id"
+          @click="showJournalContent(journalEntry)" role="button">
+          <i class="mdi mdi-arrow-right"></i>
+          {{ journalEntry.createdAtInLocalTime }}
+        </p>
+      </div>
+      <div v-else>
+        <div v-if="selectedEntry">
+          <JournalContentComponent :journalEntryProp="selectedEntry" />
+          <div class="text-end">
+            <button class="btn btn-success mb-3" @click="toggleWantsList()">List of Entries</button>
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
 </template>
 <!-- //TODO: make the description displayed when clicked on -->
@@ -15,23 +24,30 @@
 
 <script>
 import { AppState } from '../AppState';
-import { computed, reactive, onMounted } from 'vue';
+import { computed, reactive, onMounted, ref } from 'vue';
 import JournalContentComponent from "../components/JournalContentComponent.vue";
 import { logger } from "../utils/Logger.js";
 
 export default {
 
   setup() {
+    let wantsListOfEntries = ref(true)
 
 
     return {
-      journalEntrys: computed(() => AppState.journalEntrys),
+      journalEntrys: computed(() => AppState.journalEntrys.reverse()),
       //TODO: make today's entry not show up on list
       selectedEntry: null,
+      wantsListOfEntries,
 
-      showEntry(entry) {
+      toggleWantsList() {
+        this.wantsListOfEntries = !this.wantsListOfEntries
+      },
+
+      showJournalContent(entry) {
         logger.log(entry)
         this.selectedEntry = entry;
+        this.toggleWantsList()
       },
 
       // convertToLocalTime(utcDateTime) {
